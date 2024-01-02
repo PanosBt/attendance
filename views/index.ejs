@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Homepage</title>
+    </head>
+
+    <body>
+        <form>
+            <label for="username">username:</label>
+            <input type="text" name="username" id="username">
+            <br>
+            <br>
+            <label for="password">password:</label>
+            <input type="password" name="password" id="password">
+        </form>
+        <ul>
+            <% for (const user of users) { %>
+                <li>
+                    <%= user.name %> - <%= user.email %> - <%= user.role %>
+                </li>
+            <% } %>
+        </ul>
+    </body>
+</html>

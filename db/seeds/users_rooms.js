@@ -1,0 +1,24 @@
+const bcrypt = require('bcrypt');
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.seed = async function(knex) {
+    // Deletes ALL existing entries
+    await Promise.all([knex('users').del(), knex('rooms').del()]);
+    const pass = await bcrypt.hash('test', 10);
+    const users = [];
+    for (const role of ['student', 'professor', 'secretary', 'admin']) {
+        users.push({
+            username: role,
+            password: pass,
+            name: `${role}${role != 'admin' ? ' test' : ''}`,
+            email: `${role}@test.com`,
+            role: role
+        })
+    }
+    await Promise.all([
+        knex('users').insert(users),
+        knex('rooms').insert([{name: 'room1'}, {name: 'room2'}])
+    ]);
+};
