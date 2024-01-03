@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
  * @returns { Promise<void> }
  */
 exports.seed = async function(knex) {
-    // Deletes ALL existing entries
     await Promise.all([knex('users').del(), knex('rooms').del()]);
     const pass = await bcrypt.hash('test', 10);
     const users = [];

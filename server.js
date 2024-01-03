@@ -24,7 +24,7 @@ app.use(json());
 app.keys = ['40bR%00siIbl'];
 app.use(session({}, app));
 
-import './auth.js';
+// import './auth.js';
 app.use(passport.initialize());
 app.use(passport.session());
 

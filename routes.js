@@ -1,5 +1,5 @@
 import koaRouter from 'koa-router';
-import auth from './middleware/auth.js';
+// import auth from './middleware/auth.js';
 // import * as UserController from './controllers/user.js';
 import * as IndexController from './controllers/index.js';
 
