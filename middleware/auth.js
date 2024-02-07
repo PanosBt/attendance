@@ -1,28 +1,26 @@
-import pkg from "jsonwebtoken";
-const { verify } = pkg;
-import config from "../config.js";
+import passport from 'koa-passport';
+import LocalStrategy from 'passport-local';
+import bcrypt from 'bcrypt';
 
-const auth =  (ctx, next) =>{
-    try {
-        const token = ctx.get('Authorization');
-        if(!token){
-            ctx.status=400;
-            ctx.body="Invalid Authentication";
-        }else{
-            verify(token, config.ACCESS_TOKEN_SECRET , (err, user) =>{
-                if (err){
-                    ctx.status=400;
-                    ctx.body="Invalid Authentication";
-                } else{
-                    ctx.request.user = user;
-                    next();
-                }
-            })
-        }
-    } catch (err) {
-        ctx.status=500;
-        ctx.body=err.message;
+import { User } from '../models/user.js';
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    const user = await User.getById(id);
+    return done(null, user);
+});
+
+passport.use(new LocalStrategy({}, async (username, password, done) => {
+    const user = await User.getByUsername(username);
+    if (!user) {
+        return done(null, false);
     }
-}
-
-export default auth;
+    const success = await bcrypt.compare(password, user.password) ;
+    if (success) {
+        return done(null, user);
+    }
+    return done(null, false);
+}));

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -6,10 +7,12 @@ exports.seed = async function(knex) {
     await knex('courses').del();
     await knex('time_schedules').del();
 
+    const pass = await bcrypt.hash('test', 10);
+
     const prof_insered_id = await knex('users').insert(
         {
             username: 'professor1',
-            password: 'test',
+            password: pass,
             name: 'test',
             email: 'test@test.com',
             role: 'professor'

@@ -8,6 +8,8 @@ import url from 'url';
 import session from 'koa-session';
 import passport from 'koa-passport';
 
+process.env.TZ = 'Europe/Athens';
+
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const app = new Koa();
@@ -24,7 +26,7 @@ app.use(json());
 app.keys = ['40bR%00siIbl'];
 app.use(session({}, app));
 
-// import './auth.js';
+import './middleware/auth.js';
 app.use(passport.initialize());
 app.use(passport.session());
 
