@@ -1,5 +1,4 @@
 import he from 'he';
-import { User } from '../models/user.js'
 import { Course } from '../models/course.js';
 
 export const get = async (ctx) => {
@@ -20,7 +19,6 @@ export const get = async (ctx) => {
 
     }
     ctx.render('index', {
-        title: 'Homepage',
         data: data
     });
 };

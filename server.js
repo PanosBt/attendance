@@ -7,18 +7,13 @@ import router from './routes.js';
 import url from 'url';
 import session from 'koa-session';
 import passport from 'koa-passport';
+import serve from 'koa-static';
 
 process.env.TZ = 'Europe/Athens';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const app = new Koa();
-
-render(app, {
-    root: path.join(__dirname, 'views'),
-    viewExt: 'ejs',
-    layout: false
-});
 
 app.use(bodyparser());
 app.use(json());
@@ -30,7 +25,14 @@ import './middleware/auth.js';
 app.use(passport.initialize());
 app.use(passport.session());
 
+render(app, {
+    root: path.join(__dirname, 'views'),
+    viewExt: 'ejs',
+    layout: false
+});
+
 app.use(router.routes()).use(router.allowedMethods());
+app.use(serve('./static'));
 
 const port = 5000;
 

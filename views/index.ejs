@@ -1,4 +1,4 @@
-<%- include('header', {title: title}) %>
+<%- include('header', {title: 'Αρχική Σελίδα'}) %>
 
 <% if (data.loggedin) { %>
     <p>Welcome <%= data.username %>!</p>
@@ -13,6 +13,7 @@
                 <th>Διδάσκων/ουσα</th>
                 <th>Αίθουσα</th>
                 <th>Ώρες</th>
+                <th></th>
             </thead>
             <tbody>
                 <% data.active_courses.forEach(course => { %>
@@ -22,6 +23,11 @@
                         <td><%= course.professor_name %></td>
                         <td><%= course.room_name %></td>
                         <td><%= `${course.time_from} - ${course.time_to}` %></td>
+                        <td>
+                            <a class="btn btn-primary" href="/declare_attendance?cid=<%= course.id %>">
+                                Δήλωση Παρουσίας
+                            </a>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>

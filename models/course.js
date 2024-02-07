@@ -13,6 +13,14 @@ export class Course {
         return course;
     }
 
+    static async get(id) {
+        const res = await knex().select().from('courses').where('id', id);
+        if (res) {
+            return Course.#deserialize(res);
+        }
+        return null;
+    }
+
     static async getActiveCourses(student_ldap_id) {
         const time_now = (new Date()).toLocaleTimeString();
         const res = await knex()

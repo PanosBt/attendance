@@ -27,7 +27,7 @@ exports.seed = async function(knex) {
         ['id']
     );
 
-    const course_inserted_id = await knex('courses').insert(
+    const course2_inserted_id = await knex('courses').insert(
         {
             professor_id: prof_insered_id[0].id,
             year_season: '2023-2024',
@@ -37,9 +37,27 @@ exports.seed = async function(knex) {
         },
         ['id']
     );
+
+    const course3_inserted_id = await knex('courses').insert(
+        {
+            professor_id: prof_insered_id[0].id,
+            year_season: '2023-2024',
+            semester: 4,
+            room_id: room_insered_id[0].id,
+            name: 'Test course 3'
+        },
+        ['id']
+    );
+
     for (const n of Array(7).keys()) {
         await knex('time_schedules').insert({
-            course_id: course_inserted_id[0].id,
+            course_id: course2_inserted_id[0].id,
+            dow: n + 1,
+            time_from: '00:01',
+            time_to: '23:59'
+        });
+        await knex('time_schedules').insert({
+            course_id: course3_inserted_id[0].id,
             dow: n + 1,
             time_from: '00:01',
             time_to: '23:59'
@@ -62,7 +80,16 @@ exports.seed = async function(knex) {
 
     await knex('courses_students').insert(
         {
-            course_id: course_inserted_id[0].id,
+            course_id: course2_inserted_id[0].id,
+            student_ldap_id: ldap_id,
+            is_active: true,
+        },
+        ['id']
+    );
+
+    await knex('courses_students').insert(
+        {
+            course_id: course3_inserted_id[0].id,
             student_ldap_id: ldap_id,
             is_active: true,
         },
