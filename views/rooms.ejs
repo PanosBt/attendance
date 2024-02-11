@@ -1,0 +1,33 @@
+<%- include('header', {title: 'Αίθουσες'}) %>
+<a class="btn btn-primary mb-3" href="/edit_room">
+    Νέα Αίθουσα
+</a>
+
+<% if (rooms) { %>
+    <table class="table w-25">
+        <thead>
+            <th>Αίθουσα</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% rooms.forEach(room => { %>
+                <tr id="room_<%= room.id %>">
+                    <td><%= room.name %></td>
+                    <td>
+                        <a class="btn btn-primary" href="/edit_room?rid=<%= room.id %>">
+                            Επεξεργασία
+                        </a>
+                    </td>
+                    <td>
+                        <div class="action_btn delete_btn ii__delete_room_btn"
+                            data-rid="<%= room.id %>" data-room_name="<%= room.name %>">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } %>
+<%- include('footer') %>

@@ -18,7 +18,7 @@ export const get = async (ctx) => {
         }
 
     }
-    ctx.render('index', {
+    await ctx.render('index', {
         data: data
     });
 };

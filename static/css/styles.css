@@ -1,0 +1,89 @@
+header {
+    border-bottom: 1px solid black;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.seat_container {
+    position: relative;
+    margin-right: 5px;
+}
+
+.seat_square {
+    border: 1px solid darkgrey;
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+}
+
+
+.action_btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.delete_btn {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+}
+
+.delete_btn__seat {
+    bottom: 40px;
+    left: 30px;
+}
+
+.delete_btn__row {
+    top: 10px;
+    left: -25px;
+}
+
+.add_btn {
+    color: green;
+    font-size: 20px;
+}
+
+.room_row_container {
+    margin-bottom: 25px;
+    border-bottom: 1px solid;
+}
+
+.room_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.add_multi {
+    display: flex;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.add_multi__seats {
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+
+.add_multi input {
+    width: 22px;
+    height: 20px;
+}
+
+.empty_row {
+    height: 40px;
+    width: 100%;
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    margin-bottom: 10px;
+}
+
+input.invalid {
+    color: red;
+    border-color: red;
+}

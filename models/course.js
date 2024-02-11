@@ -2,6 +2,7 @@ import knex from '../db/db.js';
 
 export class Course {
 
+    // TODO improve / DRY
     static #deserialize(res) {
         if (!res) {
             return null;
