@@ -79,6 +79,7 @@ window.onload = () => {
                     layout: layout
                 },
                 (resJson) => {
+                    alert('Οι αλλαγές αποθηκεύτηκαν!');
                     location.replace(`/edit_room?rid=${resJson.room_id}`);
                 },
                 () => {
