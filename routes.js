@@ -10,7 +10,7 @@ const router = new koaRouter();
 
 const auth_middleware = async (ctx, next) => {
     if (!ctx.isAuthenticated()) {
-        ctx.redirect('/');
+        return ctx.redirect('/');
     }
     await next();
 };
