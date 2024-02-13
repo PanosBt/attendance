@@ -8,6 +8,7 @@ import url from 'url';
 import session from 'koa-session';
 import passport from 'koa-passport';
 import serve from 'koa-static';
+import formidable from 'koa2-formidable';
 
 process.env.TZ = 'Europe/Athens';
 
@@ -15,6 +16,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const app = new Koa();
 
+app.use(formidable());
 app.use(bodyparser());
 app.use(json());
 

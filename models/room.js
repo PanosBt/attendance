@@ -31,6 +31,11 @@ export class Room {
         return Room.#deserialize(res);
     }
 
+    static async getByName(name) {
+        const res = await knex.first().from('rooms').where('name', name);
+        return Room.#deserialize(res);
+    }
+
     static async create(roomName, layout) {
         try {
             const insertedIdArr = await knex()

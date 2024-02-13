@@ -1,0 +1,37 @@
+<%- include('header', {title: 'Μαθήματα'}) %>
+
+<% if(time_schedules.length) { %>
+    <table class="table">
+        <thead>
+            <th>Μάθημα</th>
+            <th>Αίθουσα</th>
+            <th>Ημέρα</th>
+            <th>Ώρες</th>
+        </thead>
+        <tbody>
+            <% time_schedules.forEach(time_schedule => { %>
+                <tr>
+                    <td><%= time_schedule.course_name %></td>
+                    <td><%= time_schedule.room_name %></td>
+                    <td><%= time_schedule.day %></td>
+                    <td><%= time_schedule.time_from.substring(0, 5) %> - <%= time_schedule.time_to.substring(0, 5) %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>
+
+<hr class="w-50">
+<div class ="d-flex flex-column align-items-end">
+    <h5>Ανέβασμα Προγράμματος</h5>
+    <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει το προηγούμενο πρόγραμμα!</small>
+    <form class="w-25" action="/upload_time_schedules" method="POST", enctype="multipart/form-data">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="time_schedules" name="time_schedules">
+            <label class="custom-file-label" for="time_schedules">Αρχείο .xlsx</label>
+        </div>
+        <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
+    </form>
+</div>
+
+<%- include('footer') %>

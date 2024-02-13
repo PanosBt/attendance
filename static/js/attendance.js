@@ -54,6 +54,11 @@ const addRowsHtmlToRoom = (room, addRowsContainer, rowsHtml, newRowsCount) => {
 }
 
 window.onload = () => {
+    document.querySelector('.custom-file-input').addEventListener('change', (ev) => {
+        const fileName = ev.currentTarget.files[0].name;
+        ev.currentTarget.parentNode.querySelector('.custom-file-label').innerText = fileName;
+    });
+
     document.addEventListener('click', async ev => {
         const target = ev.target;
 

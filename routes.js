@@ -3,6 +3,8 @@ import koaRouter from 'koa-router';
 import * as IndexController from './controllers/index.js';
 import * as DeclareAttendanceController from './controllers/declare_attendance.js';
 import * as RoomsController from './controllers/rooms.js';
+import * as CoursesController from './controllers/courses.js';
+import * as TimeScheduleController from './controllers/time_schedule.js';
 import * as LoginController from './controllers/login.js';
 import * as LogoutController from './controllers/logout.js';
 
@@ -23,6 +25,12 @@ router.get('/rooms', auth_middleware, RoomsController.getRooms);
 router.get('/edit_room', auth_middleware, RoomsController.editRoomPage);
 router.post('/edit_room', auth_middleware, RoomsController.editRoom);
 router.post('/delete_room', auth_middleware, RoomsController.deleteRoom);
+
+router.get('/courses', auth_middleware, CoursesController.get);
+router.post('/upload_courses', auth_middleware, CoursesController.upload);
+
+router.get('/time_schedule', auth_middleware, TimeScheduleController.get);
+router.post('/upload_time_schedules', auth_middleware, TimeScheduleController.upload);
 
 router.post('/login', LoginController.login);
 router.post('/logout', LogoutController.logout);

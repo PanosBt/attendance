@@ -1,0 +1,39 @@
+<%- include('header', {title: 'Μαθήματα'}) %>
+
+<% if(courses.length) { %>
+    <table class="table">
+        <thead>
+            <th>Όνομα</th>
+            <th>Διδάσκων</th>
+            <th>Αίθουσα</th>
+            <th>Εξάμηνο</th>
+            <th>Ακαδημαϊκό Έτος</th>
+        </thead>
+        <tbody>
+            <% courses.forEach(course => { %>
+                <tr>
+                    <td><%= course.name %></td>
+                    <td><%= course.professor_name %> (<%= course.professor_ldap_id %>)</td>
+                    <td><%= course.room_name %></td>
+                    <td><%= course.semester %>ο</td>
+                    <td><%= course.year_season %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>
+
+<hr class="w-50">
+<div class ="d-flex flex-column align-items-end">
+    <h5>Ενημέρωση μαθημάτων</h5>
+    <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει όλα τα αποθηκευμένα μαθήματα!</small>
+    <form class="w-25" action="/upload_courses" method="POST", enctype="multipart/form-data">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="courses" name="courses">
+            <label class="custom-file-label" for="courses">Αρχείο .xlsx</label>
+        </div>
+        <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
+    </form>
+</div>
+
+<%- include('footer') %>

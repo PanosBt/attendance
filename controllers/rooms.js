@@ -1,6 +1,9 @@
 import { Room } from "../models/room.js";
 
+import { Util } from "../util.js";
+
 export const getRooms = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
     const rooms = await Room.getAll();
     await ctx.render('rooms', {
         rooms: rooms
@@ -8,6 +11,7 @@ export const getRooms = async (ctx) => {
 };
 
 export const editRoomPage = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
     const roomId = parseInt(ctx.query.rid);
     let room = null;
     if (!isNaN(roomId) && roomId > 0) {
@@ -24,6 +28,7 @@ export const editRoomPage = async (ctx) => {
 };
 
 export const editRoom = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
     const roomId = parseInt(ctx.request.body.room_id);
     const roomName = ctx.request.body.room_name;
     const layout = ctx.request.body.layout;
@@ -55,6 +60,7 @@ export const editRoom = async (ctx) => {
 };
 
 export const deleteRoom = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
     const roomId = parseInt(ctx.request.body.room_id);
     if (isNaN(roomId) || roomId <= 0) {
         ctx.response.status = 400;

@@ -13,7 +13,8 @@ exports.seed = async function(knex) {
             password: pass,
             name: `${role}${role != 'admin' ? ' test' : ''}`,
             email: `${role}@test.com`,
-            role: role
+            role: role,
+            ldap_id: role
         })
     }
     await Promise.all([

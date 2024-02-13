@@ -9,15 +9,16 @@ exports.seed = async function(knex) {
 
     const pass = await bcrypt.hash('test', 10);
 
-    const prof_insered_id = await knex('users').insert(
+    const prof_inserted_ldap_id = await knex('users').insert(
         {
             username: 'professor1',
             password: pass,
             name: 'test',
             email: 'test@test.com',
-            role: 'professor'
+            role: 'professor',
+            ldap_id: 'professor1'
         },
-        ['id']
+        ['ldap_id']
     );
 
     const room_insered_id = await knex('rooms').insert(
@@ -29,7 +30,7 @@ exports.seed = async function(knex) {
 
     const course_inserted_id = await knex('courses').insert(
         {
-            professor_id: prof_insered_id[0].id,
+            professor_ldap_id: prof_inserted_ldap_id[0].ldap_id,
             year_season: '2023-2024',
             semester: 1,
             room_id: room_insered_id[0].id,

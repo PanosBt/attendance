@@ -30,4 +30,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
     return knex.schema
         .dropTableIfExists('courses_students')
+        .alterTable('users', (table) => {
+            table.dropColumn('ldap_id');
+        });
 };
