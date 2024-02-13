@@ -1,35 +1,32 @@
 import fs from 'fs';
 import xlsx from 'node-xlsx';
 
+import { Course } from "../models/course.js";
+import { Participation } from "../models/participation.js";
 import { Util } from "../util.js";
-import { Course } from '../models/course.js';
-import { Room } from '../models/room.js';
 
 export const get = async (ctx) => {
     Util.checkRole(ctx, 'secretary');
-    const courses = await Course.getAll();
-    await ctx.render('courses', {
-        courses: courses
+    const participations = await Participation.getAll();
+    await ctx.render('participations', {
+        participations: participations
     });
 }
 
 export const upload = async (ctx) => {
     Util.checkRole(ctx, 'secretary');
-    if (!(ctx.request.files && ctx.request.files.courses)) {
+    if (!(ctx.request.files && ctx.request.files.courses_students)) {
         ctx.response.status = 400;
         return;
     }
     try {
-        const coursesFile = xlsx.parse(fs.readFileSync(ctx.request.files.courses.path));
+        const coursesFile = xlsx.parse(fs.readFileSync(ctx.request.files.courses_students.path));
         const data = coursesFile[0].data;
         const headers = data[0];
         const keysMap = {};
         const reqKeys = [
-            'professor_ldap_id',
-            'year_season',
-            'semester',
-            'room_name',
-            'name'
+            'course_name',
+            'student_ldap_id'
         ];
         const entries = [];
         for (let key of reqKeys) {
@@ -55,14 +52,14 @@ export const upload = async (ctx) => {
                 if (typeof val === 'string') {
                     val = val.trim();
                 }
-                if (key == 'room_name') {
-                    const room = await Room.getByName(val);
-                    if (!room) {
+                if (key == 'course_name') {
+                    const course = await Course.getByName(val);
+                    if (!course) {
                         // TODO error
                         ctx.response.status = 400;
                         return;
                     }
-                    entry['room_id'] = room.id;
+                    entry['course_id'] = course.id;
                 } else {
                     entry[key] = val;
                 }
@@ -74,12 +71,12 @@ export const upload = async (ctx) => {
             ctx.response.status = 400;
             return;
         }
-        await Course.deleteInsertBatch(entries);
+        await Participation.insertBatch(entries);
 
     } catch(err) {
         console.log(err);
     } finally {
-        fs.unlinkSync(ctx.request.files.courses.path);
+        fs.unlinkSync(ctx.request.files.courses_students.path);
     }
-    return ctx.redirect('/courses');
+    return ctx.redirect('/participations');
 }

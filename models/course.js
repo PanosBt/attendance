@@ -68,7 +68,7 @@ export class Course {
     static async deleteInsertBatch(data) {
         await knex.transaction(async trx => {
             await trx('courses').del();
-            await knex('courses').insert(data);
+            await trx('courses').insert(data);
         });
     }
 }

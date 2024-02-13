@@ -31,7 +31,7 @@ export class TimeSchedule {
         console.log(data);
         await knex.transaction(async trx => {
             await trx('time_schedules').del();
-            await knex('time_schedules').insert(data);
+            await trx('time_schedules').insert(data);
         });
     }
 }
