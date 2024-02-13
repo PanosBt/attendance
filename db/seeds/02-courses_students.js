@@ -83,7 +83,6 @@ exports.seed = async function(knex) {
         {
             course_id: course2_inserted_id[0].id,
             student_ldap_id: ldap_id,
-            is_active: true,
         },
         ['id']
     );
@@ -92,7 +91,6 @@ exports.seed = async function(knex) {
         {
             course_id: course3_inserted_id[0].id,
             student_ldap_id: ldap_id,
-            is_active: true,
         },
         ['id']
     );

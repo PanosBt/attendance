@@ -1,5 +1,49 @@
 <%- include('header', {title: 'Δήλωση Παρουσίας'}) %>
 
-<p>test</p>
+<h4>Δήλωση Παρουσίας</h4>
+<span>Μάθημα: <%= course.name %></span>
+
+<h5 class="text-center">Αίθουσα: <%=room.name %></h5>
+
+<div id="declare_attendance_room" data-selected_seat_index="" data-cid="<%= course.id %>">
+    <% room.layout.forEach((seatsCount, ix) => {
+        if (seatsCount > 0) { %>
+            <div class="room_row_container border-bottom-0">
+                <div class="room_row ii__room_row">
+                    <% for (let iy=0; iy < seatsCount; iy++) {
+                        let seatIndex = `${ix}_${iy}`;
+                        let isOccupied = typeof occupied_seats[seatIndex] !== 'undefined';
+                    %>
+                        <div
+                            class="seat_container
+                            <%= (isOccupied ? ' occupied' : '' ) %>
+                            <%= (already_declared_seat == seatIndex ? ' selected' : '') %>
+                            <%= (!isOccupied ? ' selectable_room_seat_container ii__selectable_room_seat' : '') %>"
+                            data-index="<%= ix %>_<%= iy %>"
+                        >
+                            <div class="seat_square"></div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="room_row_container border-bottom-0">
+                <div class="room_row">
+                    <div class="empty_row"></div>
+                </div>
+            </div>
+        <% } %>
+    <% }) %>
+
+    <div class="d-flex justify-content-end">
+        <% if (already_declared_seat) { %>
+            <span>Έχετε ήδη δηλώσει παρουσία σε αυτό το μάθημα σήμερα!</span>
+        <% } else { %>
+                <button id="declare_attendance_btn" class="btn btn-primary" disabled>
+                    ΔΗΛΩΣΗ ΠΑΡΟΥΣΙΑΣ
+                </button>
+        <% } %>
+    </div>
+</div>
 
 <%- include('footer') %>

@@ -13,7 +13,7 @@ export class Course {
     }
 
     static async get(id) {
-        const res = await knex().select().from('courses').where('id', id);
+        const res = await knex().first().from('courses').where('id', id);
         if (res) {
             return Course.#deserialize(res);
         }
@@ -38,7 +38,7 @@ export class Course {
         return res.map(row => Course.#deserialize(row));
     }
 
-    static async getActiveCourses(student_ldap_id) {
+    static async getActiveCourses(student_ldap_id, course_id = null) {
         const time_now = (new Date()).toLocaleTimeString();
         const res = await knex()
             .select(
@@ -54,10 +54,14 @@ export class Course {
                 .innerJoin('rooms', 'courses.room_id', '=', 'rooms.id')
                 .innerJoin('users', 'courses.professor_ldap_id', '=', 'users.ldap_id')
             .where('courses_students.student_ldap_id', '=', student_ldap_id)
-            .andWhere('courses_students.is_active', '=', 'TRUE')
             .andWhereRaw('time_schedules.dow = EXTRACT(isodow from CURRENT_DATE)')
             .andWhere('time_schedules.time_from', '<=', time_now)
             .andWhere('time_schedules.time_to', '>=', time_now)
+            .modify((queryBuilder) => {
+                if (course_id) {
+                    queryBuilder.andWhere('courses.id', '=', course_id);
+                }
+            })
         ;
         if (!res) {
             return [];

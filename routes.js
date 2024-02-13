@@ -21,6 +21,7 @@ const auth_middleware = async (ctx, next) => {
 router.get('/', IndexController.get);
 
 router.get('/declare_attendance', auth_middleware, DeclareAttendanceController.get);
+router.post('/declare_attendance', auth_middleware, DeclareAttendanceController.post);
 
 router.get('/rooms', auth_middleware, RoomsController.getRooms);
 router.get('/edit_room', auth_middleware, RoomsController.editRoomPage);

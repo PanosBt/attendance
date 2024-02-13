@@ -54,13 +54,27 @@ const addRowsHtmlToRoom = (room, addRowsContainer, rowsHtml, newRowsCount) => {
 }
 
 window.onload = () => {
-    document.querySelector('.custom-file-input').addEventListener('change', (ev) => {
-        const fileName = ev.currentTarget.files[0].name;
-        ev.currentTarget.parentNode.querySelector('.custom-file-label').innerText = fileName;
-    });
-
     document.addEventListener('click', async ev => {
         const target = ev.target;
+
+        if (target.id == 'declare_attendance_btn') {
+            const room = document.getElementById('declare_attendance_room');
+            ajaxPost(
+                '/declare_attendance',
+                {
+                    cid: room.dataset.cid,
+                    seat_index: room.dataset.selected_seat_index
+                },
+                () => {
+                    alert('Η παρουσία καταγράφηκε με επιτυχία!');
+                    location.reload();
+                },
+                () => {
+                    alert('Η καταγραφή της παρουσίας απέτυχε!');
+                    location.reload();
+                }
+            )
+        }
 
         if (target.id == 'edit_room_btn') {
             const roomId = parseInt(target.dataset.room_id);
@@ -93,6 +107,17 @@ window.onload = () => {
                 }
             );
             return;
+        }
+
+        const selectableSeat = target.closest('.ii__selectable_room_seat');
+        if (selectableSeat) {
+            document.querySelectorAll('.ii__selectable_room_seat').forEach(seatElem => {
+                seatElem.classList.remove('selected');
+            });
+            selectableSeat.classList.add('selected')
+            const index = selectableSeat.dataset.index;
+            document.getElementById('declare_attendance_room').dataset.selected_seat_index = index;
+            document.getElementById('declare_attendance_btn').disabled = false;
         }
 
         const addSeatBtn = target.closest('.ii__add_seat_btn');
@@ -226,4 +251,13 @@ window.onload = () => {
         }
 
     });
+
+    const customFileInput = document.querySelector('.custom-file-input');
+    if (customFileInput) {
+        customFileInput.addEventListener('change', (ev) => {
+            const fileName = ev.currentTarget.files[0].name;
+            ev.currentTarget.parentNode.querySelector('.custom-file-label').innerText = fileName;
+        });
+    }
+
 };

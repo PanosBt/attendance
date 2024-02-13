@@ -28,7 +28,6 @@ export class TimeSchedule {
     }
 
     static async deleteInsertBatch(data) {
-        console.log(data);
         await knex.transaction(async trx => {
             await trx('time_schedules').del();
             await trx('time_schedules').insert(data);

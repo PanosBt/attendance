@@ -93,3 +93,20 @@ input.invalid {
     width: fit-content;
     display: block;
 }
+
+.selectable_room_seat_container:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.seat_container.selected .seat_square {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.seat_container.occupied .seat_square {
+    background-color: gray;
+}

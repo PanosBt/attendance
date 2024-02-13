@@ -1,3 +1,5 @@
+<h5>Δήλωση Παρουσίας</h5>
+
 <% if (data.active_courses.length) { %>
     <table class="table">
         <thead>
@@ -26,5 +28,35 @@
         </tbody>
     </table>
 <% } else { %>
-    <p>Δεν βρέθηκαν μαθήματα</p>
+    <p>Δεν βρέθηκαν ανοιχτά μαθήματα για δήλωση παρουσίας</p>
+<% } %>
+
+<h5>Παρουσίες</h5>
+<% if (data.past_attendance_records.length) { %>
+    <table class="table">
+        <thead>
+            <th>Μάθημα</th>
+            <th>Αίθουσα</th>
+            <th>Ημερομηνία, Ώρα</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% data.past_attendance_records.forEach(attendance_record => { %>
+                <tr>
+                    <td><%= attendance_record.course_name %></td>
+                    <td><%= attendance_record.room_name %></td>
+                    <td><%= attendance_record.datetime_str %></td>
+                    <td>
+                        <% if (attendance_record.current) { %>
+                            <a class="btn btn-primary" href="/declare_attendance?cid=<%= attendance_record.course_id %>">
+                                Προβολή
+                            </a>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>Δεν βρέθηκαν ανοιχτά μαθήματα για δήλωση παρουσίας</p>
 <% } %>
