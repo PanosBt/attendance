@@ -1,0 +1,57 @@
+<h5>Ανοιχτά Μαθήματα</h5>
+<% if (data.active_courses.length) { %>
+    <table class="table">
+        <thead>
+            <th>Μάθημα</th>
+            <th>Εξάμηνο</th>
+            <th>Αίθουσα</th>
+            <th>Ώρες</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% data.active_courses.forEach(course => { %>
+                <tr>
+                    <td><%= course.name %></td>
+                    <td><%= course.semester %></td>
+                    <td><%= course.room_name %></td>
+                    <td><%= `${course.time_from} - ${course.time_to}` %></td>
+                    <td>
+                        <a class="btn btn-primary" href="/view_attendance?cid=<%= course.id %>">
+                            Προβολή
+                        </a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>Δεν βρέθηκαν ανοιχτά μαθήματα για δήλωση παρουσιών</p>
+<% } %>
+
+<h5>Τα μαθήματά μου</h5>
+<% if (data.all_courses.length) { %>
+    <table class="table">
+        <thead>
+            <th>Μάθημα</th>
+            <th>Εξάμηνο</th>
+            <th>Αίθουσα</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% data.all_courses.forEach(course => { %>
+                <tr>
+                    <td><%= course.name %></td>
+                    <td><%= course.semester %></td>
+                    <td><%= course.room_name %></td>
+                    <td>
+                        <a class="btn btn-primary" href="/attendance_registries?cid=<%= course.id %>">
+                            Προβολή
+                        </a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>Δεν βρέθηκαν ανοιχτά μαθήματα για δήλωση παρουσιών</p>
+<% } %>

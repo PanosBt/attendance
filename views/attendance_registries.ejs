@@ -1,0 +1,42 @@
+<%- include('header', {title: 'Παρουσιολόγια'}) %>
+
+<h4>Παρουσιολογία Μαθήματος</h4>
+<span>Μάθημα: <%= course.name %></span>
+
+<% if (attendance_registry_records.length) { %>
+    <table class="table table-responsive mt-3">
+        <thead>
+            <th>Ημερομηνία</th>
+            <th>Αίθουσα</th>
+            <th>Οριστικοποιημένο</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% attendance_registry_records.forEach(attRec => { %>
+                <tr>
+                    <td><%= attRec.date_str %></td>
+                    <td><%= attRec.room_name %></td>
+                    <td>
+                        <% if (attRec.finalized) { %>
+                            <i class="fa-regular fa-square-check icon_finalized icon_finalized__check"></i>
+                        <% } else { %>
+                            <i class="fa-regular fa-circle-xmark icon_finalized icon_finalized__xmark"></i>
+                        <% } %>
+
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="/view_past_attendance?arid=<%= attRec.id %>">
+                            ΠΡΟΒΟΛΗ
+                        </a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } else { %>
+    <br>
+    <span>Δεν βρέθηκαν παρουσιολόγια για το συγκεκριμένο μάθημα</span>
+<% } %>
+
+
+<%- include('footer') %>

@@ -5,7 +5,8 @@
 
 <h5 class="text-center">Αίθουσα: <%=room.name %></h5>
 
-<div id="declare_attendance_room" data-selected_seat_index="" data-cid="<%= course.id %>">
+<div id="declare_attendance_room"
+    data-selected_seat_index="" data-cid="<%= course.id %>" data-arid="<%= attendance_registry_record.id %>">
     <% room.layout.forEach((seatsCount, ix) => {
         if (seatsCount > 0) { %>
             <div class="room_row_container border-bottom-0">
@@ -18,8 +19,8 @@
                             class="seat_container
                             <%= (isOccupied ? ' occupied' : '' ) %>
                             <%= (already_declared_seat == seatIndex ? ' selected' : '') %>
-                            <%= (!isOccupied ? ' selectable_room_seat_container ii__selectable_room_seat' : '') %>"
-                            data-index="<%= ix %>_<%= iy %>"
+                            <%= (!isOccupied && attendance_registry_record.open ? ' selectable_room_seat_container ii__selectable_room_seat' : '') %>"
+                            data-index="<%= seatIndex %>"
                         >
                             <div class="seat_square"></div>
                         </div>
@@ -38,7 +39,9 @@
     <div class="d-flex justify-content-end">
         <% if (already_declared_seat) { %>
             <span>Έχετε ήδη δηλώσει παρουσία σε αυτό το μάθημα σήμερα!</span>
-        <% } else { %>
+        <% } else if (!attendance_registry_record.open) { %>
+            <span>Η δήλωση παρουσιών δεν έχει ανοίξει ακόμη απ' τον/την διδάσκων/διδάσκουσα.</span>
+         <% } else { %>
                 <button id="declare_attendance_btn" class="btn btn-primary" disabled>
                     ΔΗΛΩΣΗ ΠΑΡΟΥΣΙΑΣ
                 </button>

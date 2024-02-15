@@ -36,6 +36,9 @@ export const get = async (ctx) => {
             }
             data.active_courses = Object.values(activeCoursesMap);
             data.past_attendance_records = pastAttendanceRecords;
+        } else if (user.role == 'professor') {
+            data.active_courses = await Course.getActiveCourses(user.ldap_id, null, 'professor');
+            data.all_courses = await Course.getByProfessorLdapId(user.ldap_id);
         }
 
     }

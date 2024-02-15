@@ -5,7 +5,7 @@ import { Util } from "../util.js";
 import { Course } from '../models/course.js';
 import { Room } from '../models/room.js';
 
-export const get = async (ctx) => {
+export const getAll = async (ctx) => {
     Util.checkRole(ctx, 'secretary');
     const courses = await Course.getAll();
     await ctx.render('courses', {
@@ -36,14 +36,12 @@ export const upload = async (ctx) => {
             let keyIndex = headers.indexOf(key);
             if (keyIndex == -1) {
                 console.log('key not found', key);
-                // TODO error
                 ctx.response.status = 400;
                 return;
             }
             keysMap[key] = keyIndex;
         }
         if (Object.keys(keysMap).length != reqKeys.length) {
-                // TODO error
                 ctx.response.status = 400;
                 return;
         }
@@ -58,7 +56,6 @@ export const upload = async (ctx) => {
                 if (key == 'room_name') {
                     const room = await Room.getByName(val);
                     if (!room) {
-                        // TODO error
                         ctx.response.status = 400;
                         return;
                     }
@@ -70,14 +67,12 @@ export const upload = async (ctx) => {
             entries.push(entry);
         }
         if(entries.length != data.length - 1) {
-            // TODO error
             ctx.response.status = 400;
             return;
         }
         await Course.deleteInsertBatch(entries);
 
     } catch(err) {
-        console.log(err);
     } finally {
         fs.unlinkSync(ctx.request.files.courses.path);
     }

@@ -1,0 +1,99 @@
+<%- include('header', {title: 'Προβολή Παρουσίας'}) %>
+
+<h4>Προβολή Παρουσιολογίου</h4>
+<span>Μάθημα: <%= course.name %></span>
+<br>
+<span>Ημερομηνία: <%= attendance_registry_record.date_str %></span>
+<br>
+<span>Σύνολο παρουσιών: <%= occupied_seats.total %></span>
+
+<div class="mt-2">
+    <% if (!attendance_registry_record.finalized) { %>
+        <button class="btn btn-primary ii__toggle_ar_open_btn" id="open_ar_btn"
+            data-arid="<%= attendance_registry_record.id %>"
+            <%- (attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
+            ΑΝΟΙΓΜΑ ΠΑΡΟΥΣΙΩΝ
+        </button>
+        <button class="btn btn-primary ii__toggle_ar_open_btn" id="close_ar_btn"
+            data-arid="<%= attendance_registry_record.id %>"
+            <%- (!attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
+            ΚΛΕΙΔΩΜΑ ΠΑΡΟΥΣΙΩΝ
+        </button>
+    <% } %>
+</div>
+
+<h5 class="text-center mb-4">Αίθουσα: <%=room.name %></h5>
+
+<div id="view_attendance_room" data-cid="<%= course.id %>">
+    <% room.layout.forEach((seatsCount, ix) => {
+        if (seatsCount > 0) { %>
+            <div class="room_row_container border-bottom-0">
+                <div class="room_row ii__room_row">
+                    <% for (let iy=0; iy < seatsCount; iy++) {
+                        let seatDesc = `Σειρά: ${ix + 1} Θέση: ${iy}`;
+                        let occupiedBy = occupied_seats[`${ix}_${iy}`];
+                    %>
+                        <% if (occupiedBy) {
+                            let studentDesc = `${occupiedBy.student_name ?? ''} ${occupiedBy.student_ldap_id}`;
+                            if (!attendance_registry_record.finalized) { %>
+                                <div class="action_btn delete_btn delete_btn__seat delete_btn__seat_rel ii__delete_attendance"
+                                    data-student_name="<%= studentDesc %>"
+                                    data-datetime="<%= occupiedBy.datetime_str %>"
+                                    data-seat_desc="<%= seatDesc %>"
+                                    data-aid="<%= occupiedBy.attendance_record_id %>"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+                            <% } %>
+                            <div class="seat_container occupied"
+                            tabindex="0" data-toggle="tooltip" data-placement="top" data-html="true"
+                            title="
+                                <span><%= studentDesc %></span>
+                                <br>
+                                <span><%= occupiedBy.datetime_str %></span>
+                                <br>
+                                <span><%= seatDesc %></span>
+                            "
+                            >
+                                <div class="seat_square"></div>
+                            </div>
+                        <% } else { %>
+                            <div class="seat_container">
+                                <div class="seat_square"></div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="room_row_container border-bottom-0">
+                <div class="room_row">
+                    <div class="empty_row"></div>
+                </div>
+            </div>
+        <% } %>
+    <% }) %>
+
+    <div class="d-flex justify-content-end">
+        <% if (attendance_registry_record.finalized) { %>
+            <span>Το παρουσιολόγιο έχει οριστικοποιηθεί.</span>
+        <% } else {
+            if (attendance_registry_record.open) { %>
+                <div class="text-right">
+                    <small class="opacity-75">Κλειδώστε το παρουσιολόγιο για να μπορέσετε να το οριστικοποιήσετε.</small>
+                    <br>
+                    <button id="finalize_attendance_btn" class="btn btn-primary" disabled data-arid="<%= attendance_registry_record.id %>">
+                        ΟΡΙΣΤΙΚΟΠΟΙΗΣΗ
+                    </button>
+                </div>
+            <% } else { %>
+                <button id="finalize_attendance_btn" class="btn btn-primary" data-arid="<%= attendance_registry_record.id %>">
+                    ΟΡΙΣΤΙΚΟΠΟΙΗΣΗ
+                </button>
+            <% } %>
+        <% } %>
+    </div>
+
+</div>
+
+<%- include('footer') %>

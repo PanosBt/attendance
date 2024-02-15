@@ -54,6 +54,8 @@ const addRowsHtmlToRoom = (room, addRowsContainer, rowsHtml, newRowsCount) => {
 }
 
 window.onload = () => {
+
+    // on click listeners
     document.addEventListener('click', async ev => {
         const target = ev.target;
 
@@ -103,6 +105,22 @@ window.onload = () => {
                 },
                 () => {
                     alert('Η ενημέρωση των στοιχείων απέτυχε.');
+                    location.reload();
+                }
+            );
+            return;
+        }
+
+        if (target.id == 'finalize_attendance_btn') {
+            const arid = parseInt(target.dataset.arid);
+            await ajaxPost(
+                '/finalize_attendance',
+                {arid: arid},
+                () => {
+                    location.reload();
+                },
+                () => {
+                    alert('Η οριστικοποίηση απέτυχε');
                     location.reload();
                 }
             );
@@ -250,6 +268,50 @@ window.onload = () => {
             return;
         }
 
+        const toggleAttendanceRegistryOpenBtn = target.closest('.ii__toggle_ar_open_btn');
+        if (toggleAttendanceRegistryOpenBtn) {
+            toggleAttendanceRegistryOpenBtn.disabled = true;
+            const arid = toggleAttendanceRegistryOpenBtn.dataset.arid;
+            ajaxPost(
+                '/toggle_ar_open',
+                {arid: parseInt(arid)},
+                (resJson) => {
+                    location.reload();
+                },
+                () => {
+                    alert('Η αλλαγή απέτυχε');
+                    location.reload();
+                }
+            );
+            return;
+        }
+
+        const deleteAttendanceBtn = target.closest('.ii__delete_attendance');
+        if (deleteAttendanceBtn) {
+            const aid = deleteAttendanceBtn.dataset.aid;
+            const msg = `
+                Είστε σίγουροι ότι επιθυμείτε τη διαγραφή της παρουσίας με τα παρακάτω στοιχεία;\n
+                Φοιτητής: ${deleteAttendanceBtn.dataset.student_name}\n
+                Ημ/νία-Ώρα: ${deleteAttendanceBtn.dataset.datetime}\n
+                Θέση: ${deleteAttendanceBtn.dataset.seat_desc}\n
+            `;
+            if (confirm(msg)) {
+                const errMsg = 'Η διαγραφή απέτυχε';
+                ajaxPost(
+                    '/delete_attendance',
+                    {aid: parseInt(aid)},
+                    (resJson) => {
+                        location.reload();
+                    },
+                    () => {
+                        alert(errMsg);
+                        location.reload();
+                    }
+                );
+            }
+            return;
+        }
+
     });
 
     const customFileInput = document.querySelector('.custom-file-input');
@@ -260,4 +322,5 @@ window.onload = () => {
         });
     }
 
+    $('[data-toggle="tooltip"]').tooltip();
 };

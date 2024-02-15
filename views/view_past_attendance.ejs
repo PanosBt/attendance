@@ -1,0 +1,66 @@
+<%- include('header', {title: 'Παρουσίες Μαθήματος'}) %>
+
+<h4>Παρουσίες Μαθήματος</h4>
+<span>Μάθημα: <%= attendance_registry_record.course_name %></span>
+<br>
+<span>Ημερομηνία: <%= attendance_registry_record.date_str %></span>
+<br>
+<span>Αίθουσα: <%= attendance_registry_record.room_name %></span>
+<br>
+
+<% if (attendance_records.length) { %>
+    <table class="table table-responsive mt-3">
+        <thead>
+            <th>Φοιτητής</th>
+            <th>Ημερομηνία - Ώρα</th>
+            <th>Θέση</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% attendance_records.forEach(attRec => {
+                let seatParts = attRec.seat_index.split('_');
+                let seatDesc = `Σειρά ${parseInt(seatParts[0]) + 1} - Θέση ${seatParts[1]}`;
+                let studentDesc = `${attRec.student_name ?? ''} ${attRec.student_ldap_id}`;
+            %>
+                <tr>
+                    <td><%= studentDesc %></td>
+                    <td><%= attRec.datetime_str %></td>
+                    <td><%= seatDesc %></td>
+                    <td>
+                        <% if (!attendance_registry_record.finalized) { %>
+                            <div class="action_btn delete_btn ii__delete_attendance"
+                                data-student_name="<%= studentDesc %>"
+                                data-datetime="<%= attRec.datetime_str %>"
+                                data-seat_desc="<%= seatDesc %>"
+                                data-aid="<%= attRec.id %>"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <% if (!attendance_registry_record.finalized) {
+        if (attendance_registry_record.open) { %>
+            <button class="btn btn-primary ii__toggle_ar_open_btn" id="close_ar_btn"
+                data-arid="<%= attendance_registry_record.id %>"
+            >
+                ΚΛΕΙΔΩΜΑ ΠΑΡΟΥΣΙΩΝ
+            </button>
+        <% } %>
+        <button id="finalize_attendance_btn" class="btn btn-primary" <%= (attendance_registry_record.open ? ' disabled' : '') %>
+            data-arid="<%= attendance_registry_record.id %>">
+            ΟΡΙΣΤΙΚΟΠΟΙΗΣΗ
+        </button>
+    <% } %>
+
+<% } else { %>
+    <br>
+    <span>Δεν υπάρχουν παρουσίες στο συγκεκριμένο παρουσιολόγιο.</span>
+<% } %>
+
+
+<%- include('footer') %>

@@ -42,7 +42,7 @@ export class Room {
                     'id'
                 )
                 .into('rooms');
-            return Room.get(insertedIdArr[0].id);
+            return await Room.get(insertedIdArr[0].id);
         } catch (err) {
             return null;
         }

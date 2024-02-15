@@ -41,29 +41,67 @@ export class Attendance {
             .where('student_ldap_id', student_ldap_id)
             .orderBy('attendance.datetime', 'desc')
         ;
+        if (!res) {
+            return [];
+        }
         return res.map(row => Attendance.#deserialize(row));
     }
 
-    static async getTodayAttendance(room_id, course_id, student_ldap_id=null) {
-        const res = await knex.select()
+    static async getCourseAttendance(room_id, course_id, student_ldap_id=null, dateStr='') {
+        const res = await knex
+            .select('attendance.*', 'users.ldap_id AS student_ldap_id', 'users.name AS student_name')
             .from('attendance')
+                .innerJoin('users', 'attendance.student_ldap_id', '=', 'users.ldap_id')
             .where('room_id', room_id)
             .andWhere('course_id', course_id)
-            .andWhereRaw('datetime::date = CURRENT_DATE')
             .modify((queryBuilder) => {
+                if (dateStr === '') {
+                    queryBuilder.andWhereRaw('datetime::date = CURRENT_DATE');
+                } else {
+                    queryBuilder.andWhereRaw('datetime::date = ?', dateStr);
+                }
                 if (student_ldap_id) {
                     queryBuilder.andWhere('student_ldap_id', student_ldap_id);
                 }
             })
         ;
+        if (!res) {
+            return [];
+        }
         return res.map(row => Attendance.#deserialize(row));
     }
 
-    static async getTodayOccupiedSeats(room_id, course_id) {
-        const allTodayAttendance = await Attendance.getTodayAttendance(room_id, course_id);
-        const occupiedSeats = {};
-        allTodayAttendance.forEach(attendanceRecord => {
-            occupiedSeats[attendanceRecord.seat_index] = 1;
+    static async getByAttendanceRegistry(attendance_registry_id) {
+        const res = await knex
+            .select('attendance.*', 'users.name AS student_name')
+            .from('attendance')
+                .innerJoin('attendance_registry', function() {
+                    this
+                        .on('attendance_registry.course_id', 'attendance.course_id')
+                        .andOn('attendance_registry.room_id', 'attendance.room_id')
+                        .andOn(knex.raw('attendance_registry.date = attendance.datetime::date'))
+                })
+                .leftJoin('users', 'attendance.student_ldap_id', 'users.ldap_id')
+            .where('attendance_registry.id', attendance_registry_id)
+        ;
+        if (!res) {
+            return [];
+        }
+        return res.map(row => Attendance.#deserialize(row));
+    }
+
+    static async getOccupiedSeats(room_id, course_id, dateStr='') {
+        const attendance = await Attendance.getCourseAttendance(room_id, course_id, null, dateStr);
+        const occupiedSeats = {
+            total: attendance.length
+        };
+        attendance.forEach(attendanceRecord => {
+            occupiedSeats[attendanceRecord.seat_index] = {
+                student_ldap_id: attendanceRecord.student_ldap_id,
+                student_name: attendanceRecord.student_name,
+                datetime_str: attendanceRecord.datetime_str,
+                attendance_record_id: attendanceRecord.id
+            };
         });
         return occupiedSeats;
     }
@@ -89,6 +127,17 @@ export class Attendance {
             });
         } catch (err) {
         }
-        return Attendance.get(insertedId);
+        return await Attendance.get(insertedId);
+    }
+
+    async delete() {
+        try {
+            await knex('attendance')
+                .where('id', this.id)
+                .del();
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 }

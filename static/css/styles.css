@@ -37,6 +37,13 @@ header {
     left: 30px;
 }
 
+.delete_btn__seat.delete_btn__seat_rel {
+    position: relative;
+    bottom: 30px;
+    left: 30px;
+    margin-right: -15px;
+}
+
 .delete_btn__row {
     top: 10px;
     left: -25px;
@@ -109,4 +116,24 @@ input.invalid {
 
 .seat_container.occupied .seat_square {
     background-color: gray;
+}
+
+.opacity-75 {
+    opacity: .75;
+}
+
+#view_attendance_room .seat_container.occupied:hover {
+    opacity: 0.6;
+}
+
+.icon_finalized {
+    font-size: 20px;
+}
+
+.icon_finalized__check {
+    color: green;
+}
+
+.icon_finalized__xmark {
+    color: red;
 }

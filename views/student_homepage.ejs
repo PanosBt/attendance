@@ -19,16 +19,20 @@
                     <td><%= course.room_name %></td>
                     <td><%= `${course.time_from} - ${course.time_to}` %></td>
                     <td>
-                        <a class="btn btn-primary" href="/declare_attendance?cid=<%= course.id %>">
-                            Δήλωση Παρουσίας
-                        </a>
+                        <% if (course.attendances_finalized) { %>
+                            <small>Το παρουσιολόγιο έχει οριστικοποιηθεί.</small>
+                        <% } else { %>
+                            <a class="btn btn-primary" href="/declare_attendance?cid=<%= course.id %>">
+                                Δήλωση Παρουσίας
+                            </a>
+                        <% } %>
                     </td>
                 </tr>
             <% }); %>
         </tbody>
     </table>
 <% } else { %>
-    <p>Δεν βρέθηκαν ανοιχτά μαθήματα για δήλωση παρουσίας</p>
+    <p>Δεν υπάρχουν ανοιχτά μαθήματα για δήλωση παρουσίας</p>
 <% } %>
 
 <h5>Παρουσίες</h5>
