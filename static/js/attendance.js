@@ -296,7 +296,6 @@ window.onload = () => {
                 Θέση: ${deleteAttendanceBtn.dataset.seat_desc}\n
             `;
             if (confirm(msg)) {
-                const errMsg = 'Η διαγραφή απέτυχε';
                 ajaxPost(
                     '/delete_attendance',
                     {aid: parseInt(aid)},
@@ -304,7 +303,7 @@ window.onload = () => {
                         location.reload();
                     },
                     () => {
-                        alert(errMsg);
+                        alert('Η διαγραφή απέτυχε');
                         location.reload();
                     }
                 );
@@ -312,6 +311,28 @@ window.onload = () => {
             return;
         }
 
+        const deleteCourseBtn = target.closest('.ii__delete_course_btn');
+        if (deleteCourseBtn) {
+            const cid = deleteCourseBtn.dataset.cid;
+            const msg = `
+                Είστε σίγουροι ότι επιθυμείτε τη διαγραφή του μαθήματος ${deleteCourseBtn.dataset.course_name};
+                Προσοχή! Αυτή η ενέργεια θα διαγράψει και τις αντίστοιχες παρουσίες των φοιτητών και δεν μπορεί να αναιρεθεί.\n
+            `;
+            if (confirm(msg)) {
+                ajaxPost(
+                    '/delete_course',
+                    {cid: parseInt(cid)},
+                    (resJson) => {
+                        location.reload();
+                    },
+                    () => {
+                        alert('Η διαγραφή απέτυχε');
+                        location.reload();
+                    }
+                );
+            }
+            return;
+        }
     });
 
     const customFileInput = document.querySelector('.custom-file-input');

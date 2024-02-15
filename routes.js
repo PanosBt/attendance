@@ -35,7 +35,9 @@ router.post('/edit_room', auth_middleware, RoomsController.editRoom);
 router.post('/delete_room', auth_middleware, RoomsController.deleteRoom);
 
 router.get('/courses', auth_middleware, CoursesController.getAll);
+router.post('/courses', auth_middleware, CoursesController.post);
 router.post('/upload_courses', auth_middleware, CoursesController.upload);
+router.post('/delete_course', auth_middleware, CoursesController.postDelete);
 
 router.get('/participations', auth_middleware, ParticipationsController.get);
 router.post('/upload_participations', auth_middleware, ParticipationsController.upload);

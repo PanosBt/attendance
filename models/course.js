@@ -49,6 +49,7 @@ export class Course {
             .from('courses')
                 .leftJoin('users', 'courses.professor_ldap_id', '=', 'users.ldap_id')
                 .leftJoin('rooms', 'courses.room_id', '=', 'rooms.id')
+            .orderBy('id', 'asc')
             ;
         if (!res) {
             return [];
@@ -101,10 +102,44 @@ export class Course {
         return res.map(row => Course.#deserialize(row));
     }
 
-    static async deleteInsertBatch(data) {
+    static async create(professor_ldap_id, year_season, semester, room_id, name) {
+        try {
+            const insertedIdArr = await knex()
+                .insert(
+                    {
+                        professor_ldap_id: professor_ldap_id,
+                        year_season: year_season,
+                        semester: semester,
+                        room_id, room_id,
+                        name: name
+                    },
+                    'id'
+                )
+                .into('courses');
+            return await Course.get(insertedIdArr[0].id);
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
+    }
+
+    static async deleteInsertBatch(data, deleteCurrentData) {
         await knex.transaction(async trx => {
-            await trx('courses').del();
+            if (deleteCurrentData) {
+                await trx('courses').del();
+            }
             await trx('courses').insert(data);
         });
+    }
+
+    async delete() {
+        try {
+            await knex('courses')
+                .where('id', this.id)
+                .del();
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 }

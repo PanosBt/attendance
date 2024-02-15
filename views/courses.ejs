@@ -8,6 +8,7 @@
             <th>Αίθουσα</th>
             <th>Εξάμηνο</th>
             <th>Ακαδημαϊκό Έτος</th>
+            <th></th>
         </thead>
         <tbody>
             <% courses.forEach(course => { %>
@@ -17,23 +18,70 @@
                     <td><%= course.room_name %></td>
                     <td><%= course.semester %>ο</td>
                     <td><%= course.year_season %></td>
+                    <td>
+                        <div class="action_btn delete_btn ii__delete_course_btn"
+                            data-cid="<%= course.id %>" data-course_name="<%= course.name %>">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    </td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
 <% } %>
 
-<hr class="w-50">
-<div class ="d-flex flex-column align-items-end">
-    <h5>Ενημέρωση μαθημάτων</h5>
-    <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει όλα τα αποθηκευμένα μαθήματα!</small>
-    <form class="w-25" action="/upload_courses" method="POST", enctype="multipart/form-data">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="courses" name="courses">
-            <label class="custom-file-label" for="courses">Αρχείο .xlsx</label>
-        </div>
-        <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
+<% if (rooms.length) { %>
+    <form method="POST" class="form">
+        <table class="table">
+            <thead>
+                <th>Όνομα</th>
+                <th>Διδάσκων (LDAP ID)</th>
+                <th>Αίθουσα</th>
+                <th>Εξάμηνο</th>
+                <th>Ακαδημαϊκό Έτος</th>
+                <th></th>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><input type="text" name="course_name" class="form-control" required></td>
+                    <td><input type="text" name="professor_ldap_id" class="form-control" required></td>
+                    <td>
+                        <select name="room_id" class="form-control" required>
+                            <% rooms.forEach(room => { %>
+                                <option value="<%= room.id %>"><%= room.name %></option>
+                            <% }) %>
+                        </select>
+                    </td>
+                    <td><input type="text" name="semester" class="form-control" required></td>
+                    <td><input type="text" name="year_season" class="form-control" required></td>
+                    <td><input type="submit" class="btn btn-primary form-control" value="ΝΕΟ ΜΑΘΗΜΑ" required></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
-</div>
+
+    <hr class="w-50">
+    <div class ="d-flex flex-column align-items-end">
+        <h5>Ενημέρωση μαθημάτων</h5>
+        <form class="w-25" action="/upload_courses" method="POST" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="courses" name="courses">
+                <label class="custom-file-label" for="courses">Αρχείο .xlsx</label>
+            </div>
+            <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει όλα τα αποθηκευμένα μαθήματα και τις αντίστοιχες παρουσίες αν επιλέξετε το παρακάτω πεδίο!</small>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="delete_past" id="delete_past">
+                <label class="form-check-label" for="delete_past">
+                    Διαγραφή προηγούμενων εγγραφών
+                </label>
+              </div>
+            <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
+        </form>
+    </div>
+
+<% } else { %>
+    <span>Πρέπει να δημιουργηθεί τουλάχιστον μία αίθουσα για να γίνει εισαγωγή μαθημάτων</span>
+<% } %>
 
 <%- include('footer') %>
