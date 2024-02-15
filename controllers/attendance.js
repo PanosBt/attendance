@@ -127,22 +127,24 @@ export const getView = async (ctx) => {
 };
 
 export const getViewPast = async (ctx) => {
-    Util.checkRole(ctx, 'professor');
+    Util.checkRole(ctx, 'professor', 'secretary');
+    const user = ctx.state.user;
     const arid = ctx.query.arid;
     if (!arid) {
         return ctx.redirect('/');
     }
     const attendanceRegistryRecord = await AttendanceRegistry.get(arid);
-    if (!attendanceRegistryRecord || attendanceRegistryRecord?.professor_ldap_id != ctx.state.user.ldap_id) {
+    if (!attendanceRegistryRecord ||
+        (user.role == 'professor' && attendanceRegistryRecord?.professor_ldap_id != user.ldap_id)
+    ) {
         return ctx.redirect('/');
     }
-
     const attendanceRecords = await Attendance.getByAttendanceRegistry(attendanceRegistryRecord.id);
-    console.log(attendanceRecords);
 
     await ctx.render('view_past_attendance', {
         attendance_registry_record: attendanceRegistryRecord,
-        attendance_records: attendanceRecords
+        attendance_records: attendanceRecords,
+        user_role: user.role
     });
 };
 
@@ -168,7 +170,7 @@ export const postToggleOpen = async (ctx) => {
 };
 
 export const postDelete = async (ctx) => {
-    Util.checkRole(ctx, 'professor');
+    Util.checkRole(ctx, 'professor', 'secretary');
     const aid = ctx.request.body.aid;
     if (!aid) {
         ctx.response.status = 400;
@@ -180,22 +182,25 @@ export const postDelete = async (ctx) => {
         return;
     }
     const user = ctx.state.user;
-    const courses = await Course.getByProfessorLdapId(user.ldap_id, attendanceRecord.course_id);
-    if (!courses.length) {
-        ctx.response.status = 400;
-        return;
+    if (user.role == 'professor') {
+        const courses = await Course.getByProfessorLdapId(user.ldap_id, attendanceRecord.course_id);
+        if (!courses.length) {
+            ctx.response.status = 400;
+            return;
+        }
+        const course = courses[0];
+        if (!course) {
+            ctx.response.status = 400;
+            return;
+        }
     }
-    const course = courses[0];
-    if (!course) {
-        ctx.response.status = 400;
-        return;
-    }
+
     const attendanceRegistryRecord = await AttendanceRegistry.getByCourseRoomDate(
         attendanceRecord.course_id,
         attendanceRecord.room_id,
         attendanceRecord.datetime.toISOString().substring(0, 10)
     );
-    if (attendanceRegistryRecord?.finalized) {
+    if (user.role == 'professor' && attendanceRegistryRecord?.finalized) {
         ctx.response.status = 400;
         return;
     }
@@ -229,16 +234,22 @@ export const postFinalize = async (ctx) => {
 };
 
 export const getRegistries = async (ctx) => {
-    Util.checkRole(ctx, 'professor');
-    if (!ctx.query.cid) {
+    Util.checkRole(ctx, 'professor', 'secretary');
+    const cid = ctx.query.cid;
+    if (!cid) {
         return ctx.redirect('/');
     }
     const user = ctx.state.user;
-    const courses = await Course.getByProfessorLdapId(user.ldap_id, ctx.query.cid);
-    if (!courses.length) {
-        return ctx.redirect('/');
+    let course;
+    if (user.role == 'professor') {
+        const courses = await Course.getByProfessorLdapId(user.ldap_id, cid);
+        if (!courses.length) {
+            return ctx.redirect('/');
+        }
+        course = courses[0];
+    } else {
+        course = await Course.get(cid);
     }
-    const course = courses[0];
     if (!course) {
         return ctx.redirect('/');
     }

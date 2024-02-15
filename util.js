@@ -1,6 +1,6 @@
 export class Util {
-    static checkRole(ctx, role) {
-        if (ctx.state.user.role != role) {
+    static checkRole(ctx, ...roles) {
+        if (!roles.some(role => ctx.state.user.role == role )) {
             return ctx.redirect('/');
         }
     };

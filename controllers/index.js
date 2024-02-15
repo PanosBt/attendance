@@ -15,6 +15,7 @@ export const get = async (ctx) => {
         };
         if (user.role == 'student') {
             const activeCourses = await Course.getActiveCourses(user.ldap_id);
+            console.log(activeCourses);
             const pastAttendanceRecords = await Attendance.getByStudentLdapId(user.ldap_id);
             const activeCoursesMap = {};
             for (const activeCourse of activeCourses) {

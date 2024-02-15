@@ -8,6 +8,7 @@
             <th>Αίθουσα</th>
             <th>Εξάμηνο</th>
             <th>Ακαδημαϊκό Έτος</th>
+            <th>Παρουσιολόγια</th>
             <th></th>
         </thead>
         <tbody>
@@ -19,10 +20,13 @@
                     <td><%= course.semester %>ο</td>
                     <td><%= course.year_season %></td>
                     <td>
+                        <a class="btn btn-primary" href="/attendance_registries?cid=<%= course.id %>">ΠΡΟΒΟΛΗ</a>
+                    </td>
+                    <td>
                         <div class="action_btn delete_btn ii__delete_course_btn"
                             data-cid="<%= course.id %>" data-course_name="<%= course.name %>">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
                     </td>
                 </tr>
             <% }) %>

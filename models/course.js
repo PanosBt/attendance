@@ -66,7 +66,8 @@ export class Course {
                 'time_schedules.time_to',
                 'rooms.name AS room_name',
                 'users.name AS professor_name',
-                'attendance_registry.finalized AS attendances_finalized'
+                'attendance_registry.finalized AS attendances_finalized',
+                'attendance_registry.id AS attendances_id'
             )
             .from('courses')
                 .innerJoin('time_schedules', 'courses.id', '=', 'time_schedules.course_id')

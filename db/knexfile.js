@@ -9,7 +9,8 @@ module.exports = {
     connection: {
         database: process.env.DB_DATABASE,
         user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD
+        password: process.env.DB_PASSWORD,
+        timezone: 'EET'
     },
     pool: {
         min: 2,

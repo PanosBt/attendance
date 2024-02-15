@@ -27,7 +27,7 @@
                     <td><%= attRec.datetime_str %></td>
                     <td><%= seatDesc %></td>
                     <td>
-                        <% if (!attendance_registry_record.finalized) { %>
+                        <% if (!attendance_registry_record.finalized || user_role == 'secretary') { %>
                             <div class="action_btn delete_btn ii__delete_attendance"
                                 data-student_name="<%= studentDesc %>"
                                 data-datetime="<%= attRec.datetime_str %>"
