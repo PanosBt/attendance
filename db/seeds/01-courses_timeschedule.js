@@ -14,7 +14,6 @@ exports.seed = async function(knex) {
             username: 'professor1',
             password: pass,
             name: 'test',
-            email: 'test@test.com',
             role: 'professor',
             ldap_id: 'professor1'
         },

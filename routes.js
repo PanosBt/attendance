@@ -6,6 +6,7 @@ import * as RoomsController from './controllers/rooms.js';
 import * as CoursesController from './controllers/courses.js';
 import * as TimeScheduleController from './controllers/time_schedule.js';
 import * as ParticipationsController from './controllers/participations.js';
+import * as UserController from './controllers/user.js';
 import * as LoginController from './controllers/login.js';
 import * as LogoutController from './controllers/logout.js';
 
@@ -27,6 +28,7 @@ router.get('/view_past_attendance', auth_middleware, AttendanceController.getVie
 router.post('/toggle_ar_open', auth_middleware, AttendanceController.postToggleOpen);
 router.post('/delete_attendance', auth_middleware, AttendanceController.postDelete);
 router.post('/finalize_attendance', auth_middleware, AttendanceController.postFinalize);
+router.post('/unfinalize_attendance', auth_middleware, AttendanceController.postUnFinalize);
 router.get('/attendance_registries', auth_middleware, AttendanceController.getRegistries);
 
 router.get('/rooms', auth_middleware, RoomsController.getRooms);
@@ -44,6 +46,9 @@ router.post('/upload_participations', auth_middleware, ParticipationsController.
 
 router.get('/time_schedule', auth_middleware, TimeScheduleController.get);
 router.post('/upload_time_schedules', auth_middleware, TimeScheduleController.upload);
+
+router.post('/user', UserController.postCreate);
+router.post('/delete_user', UserController.postDelete);
 
 router.post('/login', LoginController.login);
 router.post('/logout', LogoutController.logout);

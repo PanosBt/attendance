@@ -55,6 +55,15 @@
             data-arid="<%= attendance_registry_record.id %>">
             ΟΡΙΣΤΙΚΟΠΟΙΗΣΗ
         </button>
+    <% } else if (user_role == 'secretary') { %>
+        <small>Το παρουσιολόγιο είναι οριστικοποιημένο.</small>
+        <br>
+        <small>Για να επιτρέψετε την επεξεργασία του παρουσιολογίου απ' τον καθηγητή πατήστε:</small>
+        <br>
+        <button id="unfinalize_attendance_btn" class="btn btn-primary mt-2"
+            data-arid="<%= attendance_registry_record.id %>">
+            ΕΠΑΝΑΦΟΡΑ
+        </button>
     <% } %>
 
 <% } else { %>

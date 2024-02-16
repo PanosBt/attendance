@@ -127,6 +127,22 @@ window.onload = () => {
             return;
         }
 
+        if (target.id == 'unfinalize_attendance_btn') {
+            const arid = parseInt(target.dataset.arid);
+            await ajaxPost(
+                '/unfinalize_attendance',
+                {arid: arid},
+                () => {
+                    location.reload();
+                },
+                () => {
+                    alert('Η επαναφορά απέτυχε');
+                    location.reload();
+                }
+            );
+            return;
+        }
+
         const selectableSeat = target.closest('.ii__selectable_room_seat');
         if (selectableSeat) {
             document.querySelectorAll('.ii__selectable_room_seat').forEach(seatElem => {
@@ -322,6 +338,29 @@ window.onload = () => {
                 ajaxPost(
                     '/delete_course',
                     {cid: parseInt(cid)},
+                    (resJson) => {
+                        location.reload();
+                    },
+                    () => {
+                        alert('Η διαγραφή απέτυχε');
+                        location.reload();
+                    }
+                );
+            }
+            return;
+        }
+
+        const deleteUserBtn = target.closest('.ii__delete_user_btn');
+        if (deleteUserBtn) {
+            const uid = deleteUserBtn.dataset.uid;
+            const msg = `
+                Είστε σίγουροι ότι επιθυμείτε τη διαγραφή του χρήστη ${deleteUserBtn.dataset.username} (user id: ${uid});\n
+                Η ενέργεια αυτή δεν μπορεί να αναιρεθεί.
+            `;
+            if (confirm(msg)) {
+                ajaxPost(
+                    '/delete_user',
+                    {uid: parseInt(uid)},
                     (resJson) => {
                         location.reload();
                     },

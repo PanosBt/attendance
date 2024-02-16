@@ -14,7 +14,6 @@ exports.seed = async function(knex) {
             username: 'professor2',
             password: pass,
             name: 'Test',
-            email: 'test@test.com',
             role: 'professor',
             ldap_id: 'professor2'
         },
@@ -72,7 +71,6 @@ exports.seed = async function(knex) {
             username: 'it21471',
             password: pass,
             name: 'Panos',
-            email: 'it21471@test.com',
             role: 'student',
             ldap_id: ldap_id
         },

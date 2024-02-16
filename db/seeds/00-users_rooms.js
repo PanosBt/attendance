@@ -12,7 +12,6 @@ exports.seed = async function(knex) {
             username: role,
             password: pass,
             name: `${role}${role != 'admin' ? ' test' : ''}`,
-            email: `${role}@test.com`,
             role: role,
             ldap_id: role
         })

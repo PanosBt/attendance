@@ -149,14 +149,17 @@ export const getViewPast = async (ctx) => {
 };
 
 export const postToggleOpen = async (ctx) => {
-    Util.checkRole(ctx, 'professor');
+    Util.checkRole(ctx, 'professor', 'secretary');
     const arid = ctx.request.body.arid;
+    const user = ctx.state.user;
     if (!arid) {
         ctx.response.status = 400;
         return;
     }
     const attendanceRegistryRecord = await AttendanceRegistry.get(arid);
-    if (!attendanceRegistryRecord || attendanceRegistryRecord?.professor_ldap_id != ctx.state.user.ldap_id) {
+    if (!attendanceRegistryRecord ||
+        (user.role == 'professor' && attendanceRegistryRecord?.professor_ldap_id != user.ldap_id)
+    ) {
         ctx.response.status = 400;
         return;
     }
@@ -213,21 +216,40 @@ export const postDelete = async (ctx) => {
 }
 
 export const postFinalize = async (ctx) => {
-    Util.checkRole(ctx, 'professor');
+    Util.checkRole(ctx, 'professor', 'secretary');
     const arid = ctx.request.body.arid;
+    const user = ctx.state.user;
     if (!arid) {
         ctx.response.status = 400;
         return;
     }
     const attendanceRegistryRecord = await AttendanceRegistry.get(arid);
     if (!attendanceRegistryRecord ||
-        attendanceRegistryRecord?.professor_ldap_id != ctx.state.user.ldap_id ||
-        attendanceRegistryRecord?.open
+        attendanceRegistryRecord?.open ||
+        (user.role == 'professor' && attendanceRegistryRecord?.professor_ldap_id != user.ldap_id)
     ) {
         ctx.response.status = 400;
         return;
     }
     attendanceRegistryRecord.finalized = true;
+    await attendanceRegistryRecord.update();
+    ctx.response.body = {};
+    ctx.response.status = 200;
+};
+
+export const postUnFinalize = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
+    const arid = ctx.request.body.arid;
+    if (!arid) {
+        ctx.response.status = 400;
+        return;
+    }
+    const attendanceRegistryRecord = await AttendanceRegistry.get(arid);
+    if (!attendanceRegistryRecord) {
+        ctx.response.status = 400;
+        return;
+    }
+    attendanceRegistryRecord.finalized = false;
     await attendanceRegistryRecord.update();
     ctx.response.body = {};
     ctx.response.status = 200;

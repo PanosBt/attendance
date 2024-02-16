@@ -1,42 +1,23 @@
 import knex from '../db/db.js';
 
 export class User {
-
-    constructor(id, username, password, name, email, role, ldap_id) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-        this.ldap_id = ldap_id;
-    }
-
     static #deserialize(res) {
         if (!res) {
             return null;
         }
-        return new User(
-            res.id,
-            res.username,
-            res.password,
-            res.name,
-            res.email,
-            res.role,
-            res.ldap_id
-        );
-    }
+        const user = new User();
+        for (const [key, val] of Object.entries(res)) {
+            user[key] = val;
+        }
+        return user;
+    };
 
     static async getAll() {
-        const users = [];
-        const res = await knex.select().from('users');
+        const res = await knex().select().from('users').orderBy('id', 'desc');
         if (!res) {
-            return users;
+            return [];
         }
-        for (const row of res) {
-            users.push(User.#deserialize(row));
-        }
-        return users;
+        return res.map(row => User.#deserialize(row));
     };
 
     static async getById(id) {
@@ -47,5 +28,37 @@ export class User {
     static async getByUsername(username) {
         const res = await knex.first().from('users').where('username', username);
         return User.#deserialize(res);
+    }
+
+    static async create(username, password, ldap_id, name, role) {
+        try {
+            const insertedIdArr = await knex()
+                .insert(
+                    {
+                        username: username,
+                        password: password,
+                        ldap_id: ldap_id,
+                        name: name,
+                        role: role
+                    },
+                    'id'
+                )
+                .into('users');
+            return await User.getById(insertedIdArr[0].id);
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
+    }
+
+    async delete() {
+        try {
+            await knex('users')
+                .where('id', this.id)
+                .del();
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 };
