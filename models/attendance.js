@@ -9,7 +9,7 @@ export class Attendance {
         for (const [key, val] of Object.entries(res)) {
             attendance[key] = val;
         }
-        attendance['datetime_str'] = (new Date(attendance.datetime).toLocaleString(
+        attendance.datetime_str = (new Date(attendance.datetime).toLocaleString(
             'el-GR',
             {
                 day: '2-digit',
@@ -20,6 +20,9 @@ export class Attendance {
                 hourCycle: 'h23'
             }
         ));
+        let seatParts = attendance.seat_index.split('_');
+        attendance.seat_desc = `Σειρά ${parseInt(seatParts[0]) + 1} - Θέση ${parseInt(seatParts[1])}`;
+        attendance.seat_desc_short = `Σ:${parseInt(seatParts[0]) + 1} Θ:${parseInt(seatParts[1])}`;
         return attendance;
     }
 

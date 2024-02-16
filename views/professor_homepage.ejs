@@ -3,7 +3,7 @@
     <table class="table">
         <thead>
             <th>Μάθημα</th>
-            <th>Εξάμηνο</th>
+            <th class="d-none d-sm-table-cell">Εξάμηνο</th>
             <th>Αίθουσα</th>
             <th>Ώρες</th>
             <th></th>
@@ -12,11 +12,14 @@
             <% data.active_courses.forEach(course => { %>
                 <tr>
                     <td><%= course.name %></td>
-                    <td><%= course.semester %></td>
+                    <td class="d-none d-sm-table-cell"><%= course.semester %></td>
                     <td><%= course.room_name %></td>
                     <td><%= `${course.time_from} - ${course.time_to}` %></td>
                     <td>
-                        <a class="btn btn-primary" href="/view_attendance?cid=<%= course.id %>">
+                        <a class="btn btn-primary d-none d-sm-inline-block" href="/view_attendance?cid=<%= course.id %>">
+                            Προβολή
+                        </a>
+                        <a class="btn btn-primary btn-sm d-sm-none" href="/view_attendance?cid=<%= course.id %>">
                             Προβολή
                         </a>
                     </td>
@@ -44,7 +47,10 @@
                     <td><%= course.semester %></td>
                     <td><%= course.room_name %></td>
                     <td>
-                        <a class="btn btn-primary" href="/attendance_registries?cid=<%= course.id %>">
+                        <a class="btn btn-primary d-none d-sm-inline-block" href="/attendance_registries?cid=<%= course.id %>">
+                            Προβολή
+                        </a>
+                        <a class="btn btn-primary btn-sm d-sm-none" href="/attendance_registries?cid=<%= course.id %>">
                             Προβολή
                         </a>
                     </td>

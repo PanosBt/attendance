@@ -19,19 +19,21 @@
         <tbody>
             <% attendance_records.forEach(attRec => {
                 let seatParts = attRec.seat_index.split('_');
-                let seatDesc = `Σειρά ${parseInt(seatParts[0]) + 1} - Θέση ${seatParts[1]}`;
                 let studentDesc = `${attRec.student_name ?? ''} ${attRec.student_ldap_id}`;
             %>
                 <tr>
                     <td><%= studentDesc %></td>
                     <td><%= attRec.datetime_str %></td>
-                    <td><%= seatDesc %></td>
+                    <td>
+                        <span class="d-none d-sm-table-cell"><%= attRec.seat_desc %></span>
+                        <span class="d-sm-none"><%= attRec.seat_desc_short %></span>
+                    </td>
                     <td>
                         <% if (!attendance_registry_record.finalized || user_role == 'secretary') { %>
                             <div class="action_btn delete_btn ii__delete_attendance"
                                 data-student_name="<%= studentDesc %>"
                                 data-datetime="<%= attRec.datetime_str %>"
-                                data-seat_desc="<%= seatDesc %>"
+                                data-seat_desc="<%= attRec.seat_desc %>"
                                 data-aid="<%= attRec.id %>"
                             >
                                 <i class="fa-solid fa-xmark"></i>
@@ -45,13 +47,13 @@
 
     <% if (!attendance_registry_record.finalized) {
         if (attendance_registry_record.open) { %>
-            <button class="btn btn-primary ii__toggle_ar_open_btn" id="close_ar_btn"
+            <button class="btn btn-primary btn-sm ii__toggle_ar_open_btn" id="close_ar_btn"
                 data-arid="<%= attendance_registry_record.id %>"
             >
                 ΚΛΕΙΔΩΜΑ ΠΑΡΟΥΣΙΩΝ
             </button>
         <% } %>
-        <button id="finalize_attendance_btn" class="btn btn-primary" <%= (attendance_registry_record.open ? ' disabled' : '') %>
+        <button id="finalize_attendance_btn" class="btn btn-primary btn-sm" <%= (attendance_registry_record.open ? ' disabled' : '') %>
             data-arid="<%= attendance_registry_record.id %>">
             ΟΡΙΣΤΙΚΟΠΟΙΗΣΗ
         </button>

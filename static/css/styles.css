@@ -156,6 +156,10 @@ input.invalid {
     margin-right: 5px;
 }
 
+.responsive_form {
+    width: 25%;
+}
+
 @media screen and (max-width: 450px) {
     .seat_square {
         width: 20px;
@@ -174,5 +178,25 @@ input.invalid {
 
     .grid_row_index {
         font-size: 12px;
+    }
+
+    header {
+        font-size: 12px;
+    }
+
+    header h4 {
+        font-size: 16px;
+    }
+
+    .table th {
+        font-size: 14px;
+    }
+
+    .table td {
+        font-size: 12px;
+    }
+
+    .responsive_form {
+        width: 100%;
     }
 }

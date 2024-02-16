@@ -8,7 +8,10 @@
         <thead>
             <th>Ημερομηνία</th>
             <th>Αίθουσα</th>
-            <th>Οριστικοποιημένο</th>
+            <th>
+                <span class="d-none d-sm-table-cell">Οριστικοποιημένο</span>
+                <span class="d-sm-none">Οριστικ.</span>
+            </th>
             <th></th>
         </thead>
         <tbody>
@@ -25,7 +28,10 @@
 
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="/view_past_attendance?arid=<%= attRec.id %>">
+                        <a class="btn btn-primary d-none d-sm-inline-block" href="/view_past_attendance?arid=<%= attRec.id %>">
+                            ΠΡΟΒΟΛΗ
+                        </a>
+                        <a class="btn btn-primary btn-sm d-sm-none" href="/view_past_attendance?arid=<%= attRec.id %>">
                             ΠΡΟΒΟΛΗ
                         </a>
                     </td>
