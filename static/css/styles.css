@@ -20,7 +20,6 @@ header {
     border-radius: 3px;
 }
 
-
 .action_btn:hover {
     opacity: 0.6;
     cursor: pointer;
@@ -136,4 +135,46 @@ input.invalid {
 
 .icon_finalized__xmark {
     color: red;
+}
+
+.grid_col_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid_col_index {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+.grid_col_index:first-child {
+    margin-left: 12px;
+}
+
+.grid_row_index {
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 450px) {
+    .seat_square {
+        width: 20px;
+        height: 20px;
+    }
+
+    .grid_col_index {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+
+    .grid_col_index:first-child {
+        margin-left: 9px;
+    }
+
+    .grid_row_index {
+        font-size: 12px;
+    }
 }

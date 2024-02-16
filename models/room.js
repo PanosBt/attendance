@@ -5,15 +5,15 @@ export class Room {
         if (!res) {
             return null;
         }
-        const course = new Room();
+        const room = new Room();
         for (const [key, val] of Object.entries(res)) {
             if (key == 'layout') {
-                course[key] = JSON.parse(val);
+                room[key] = JSON.parse(val);
             } else {
-                course[key] = val;
+                room[key] = val;
             }
         }
-        return course;
+        return room;
     }
 
     static async getAll() {

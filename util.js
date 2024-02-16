@@ -17,4 +17,8 @@ export class Util {
         ]
         return isoDow <= dowMap.length ? dowMap[isoDow - 1] : '';
     }
+
+    static localDateDbFriendly(datetime) {
+        return `${datetime.getFullYear()}-${String(datetime.getMonth() + 1).padStart(2, '0')}-${String(datetime.getDate()).padStart(2, '0')}`;
+    }
 }

@@ -7,33 +7,43 @@
 
 <div id="declare_attendance_room"
     data-selected_seat_index="" data-cid="<%= course.id %>" data-arid="<%= attendance_registry_record.id %>">
-    <% room.layout.forEach((seatsCount, ix) => {
-        if (seatsCount > 0) { %>
-            <div class="room_row_container border-bottom-0">
-                <div class="room_row ii__room_row">
-                    <% for (let iy=0; iy < seatsCount; iy++) {
-                        let seatIndex = `${ix}_${iy}`;
-                        let isOccupied = typeof occupied_seats[seatIndex] !== 'undefined';
-                    %>
-                        <div
-                            class="seat_container
-                            <%= (isOccupied ? ' occupied' : '' ) %>
-                            <%= (already_declared_seat == seatIndex ? ' selected' : '') %>
-                            <%= (!isOccupied && attendance_registry_record.open ? ' selectable_room_seat_container ii__selectable_room_seat' : '') %>"
-                            data-index="<%= seatIndex %>"
-                        >
-                            <div class="seat_square"></div>
-                        </div>
+    <% room.layout.forEach((seatsCount, ix) => { %>
+        <div class="room_row_container border-bottom-0">
+            <% if (ix == 0) { %>
+                <div class="grid_col_container">
+                    <% for (let iz = 0; iz < room.maxSeats; iz++) { %>
+                        <span class="grid_col_index"><%= iz + 1 %></span>
                     <% } %>
                 </div>
-            </div>
-        <% } else { %>
-            <div class="room_row_container border-bottom-0">
-                <div class="room_row">
-                    <div class="empty_row"></div>
-                </div>
-            </div>
-        <% } %>
+            <% }
+            if (seatsCount > 0) { %>
+                    <div class="room_row ii__room_row">
+                        <% for (let iy=0; iy < seatsCount; iy++) {
+                            let seatIndex = `${ix}_${iy}`;
+                            let isOccupied = typeof occupied_seats[seatIndex] !== 'undefined';
+                            if (iy == 0) { %>
+                                <span class="grid_row_index"><%= ix + 1 %></span>
+                            <% }
+                        %>
+                            <div
+                                class="seat_container
+                                <%= (isOccupied ? ' occupied' : '' ) %>
+                                <%= (already_declared_seat == seatIndex ? ' selected' : '') %>
+                                <%= (!isOccupied && attendance_registry_record.open ? ' selectable_room_seat_container ii__selectable_room_seat' : '') %>"
+                                data-index="<%= seatIndex %>"
+                            >
+                                <div class="seat_square"></div>
+                            </div>
+                        <% } %>
+                    </div>
+
+            <% } else { %>
+                <div class="room_row_container border-bottom-0">
+                    <div class="room_row">
+                        <div class="empty_row"></div>
+                    </div>
+            <% } %>
+        </div>
     <% }) %>
 
     <div class="d-flex justify-content-end">

@@ -23,6 +23,7 @@ export const getDeclare = async (ctx) => {
         return ctx.redirect('/');
     }
     const room = await Room.get(course.room_id);
+    room.maxSeats = Math.max.apply(null, room.layout);
     const studentTodayAttendance = await Attendance.getCourseAttendance(room.id, course.id, user.ldap_id);
     const occupiedSeats = await Attendance.getOccupiedSeats(room.id, course.id);
 
@@ -201,7 +202,7 @@ export const postDelete = async (ctx) => {
     const attendanceRegistryRecord = await AttendanceRegistry.getByCourseRoomDate(
         attendanceRecord.course_id,
         attendanceRecord.room_id,
-        attendanceRecord.datetime.toISOString().substring(0, 10)
+        Util.localDateDbFriendly(attendanceRecord.datetime)
     );
     if (user.role == 'professor' && attendanceRegistryRecord?.finalized) {
         ctx.response.status = 400;
