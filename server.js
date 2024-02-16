@@ -21,7 +21,7 @@ app.use(bodyparser());
 app.use(json());
 
 app.keys = ['40bR%00siIbl'];
-app.use(session({}, app));
+app.use(session({ sameSite: "lax" }, app));
 
 import './middleware/auth.js';
 app.use(passport.initialize());
