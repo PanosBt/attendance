@@ -30,7 +30,6 @@ export const getDeclare = async (ctx) => {
     await ctx.render('declare_attendance', {
         course: course,
         room: room,
-        user: user,
         attendance_registry_record: attendanceRegistryRecord,
         occupied_seats: occupiedSeats,
         already_declared_seat: studentTodayAttendance.length && studentTodayAttendance[0] ? studentTodayAttendance[0].seat_index : null

@@ -49,8 +49,10 @@ router.post('/upload_time_schedules', auth_middleware, TimeScheduleController.up
 
 router.post('/user', UserController.postCreate);
 router.post('/delete_user', UserController.postDelete);
+router.get('/change_pass', UserController.getChangePass);
+router.post('/change_pass', UserController.postChangePass);
 
 router.post('/login', LoginController.login);
-router.post('/logout', LogoutController.logout);
+router.get('/logout', LogoutController.logout);
 
 export default router;

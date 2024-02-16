@@ -13,10 +13,23 @@
 
     <body>
         <header>
-            <h4>Χαροκόπειο Πανεπιστήμιο Αθηνών</h4>
-            <h4>Παρουσιολόγιο</h4>
-            <% if (typeof is_index === 'undefined') {%>
-                <a href="/">Αρχική Σελίδα</a>
+            <div class="mx-auto text-center">
+                <h4>Χαροκόπειο Πανεπιστήμιο Αθηνών</h4>
+                <h4>Παρουσιολόγιο</h4>
+                <% if (typeof is_index === 'undefined') { %>
+                    <a href="/">Αρχική Σελίδα</a>
+                <% } %>
+            </div>
+
+            <!-- <img src="/img/hua_logo.png" width="40" height="40"> -->
+
+            <% if (typeof user !== 'undefined') { %>
+                <div class="d-flex flex-column align-items-start mr-4">
+                    <span>Χρήστης: <%= user.username %></span>
+                    <a href="/logout">Αποσύνδεση</a>
+                    <a href="/change_pass">Αλλαγή Κωδικού</a>
+                </div>
             <% } %>
+
         </header>
         <div class="container my-2">

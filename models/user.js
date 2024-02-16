@@ -51,6 +51,17 @@ export class User {
         }
     }
 
+    async updatePass() {
+        try {
+            await knex('users')
+                .where('id', this.id)
+                .update({ password: this.password });
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     async delete() {
         try {
             await knex('users')

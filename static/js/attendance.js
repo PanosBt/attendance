@@ -143,6 +143,36 @@ window.onload = () => {
             return;
         }
 
+        if (target.id == 'change_pass_btn') {
+            const passInput = document.getElementById('pass'),
+                pass2Input = document.getElementById('pass2'),
+                pass = passInput.value.trim(),
+                pass2 = pass2Input.value.trim()
+            ;
+
+            passInput.classList.remove('invalid');
+            pass2Input.classList.remove('invalid');
+            if (!(pass && pass2) || pass != pass2) {
+                passInput.classList.add('invalid');
+                pass2Input.classList.add('invalid');
+                return;
+            }
+
+            await ajaxPost(
+                '/change_pass',
+                {pass: pass},
+                () => {
+                    alert('Ο κωδικός άλλαξε!');
+                    location.reload();
+                },
+                () => {
+                    alert('Η αλλαγή κωδικού απέτυχε');
+                    location.reload();
+                }
+            );
+            return;
+        }
+
         const selectableSeat = target.closest('.ii__selectable_room_seat');
         if (selectableSeat) {
             document.querySelectorAll('.ii__selectable_room_seat').forEach(seatElem => {

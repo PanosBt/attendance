@@ -38,3 +38,21 @@ export const postDelete = async (ctx) => {
     ctx.response.body = {};
     ctx.response.status = 200;
 };
+
+export const getChangePass = async (ctx) => {
+    if (!ctx.isAuthenticated()) {
+        return redirect('/');
+    }
+    await ctx.render('change_pass');
+};
+
+export const postChangePass = async (ctx) => {
+    if (!ctx.isAuthenticated() || !ctx.request.body.pass) {
+        ctx.response.status = 400;
+        return;
+    }
+    ctx.state.user.password = await bcrypt.hash(ctx.request.body.pass, 10);
+    const success = await ctx.state.user.updatePass();
+    ctx.body = { success: success };
+    ctx.response.status = 200;
+}

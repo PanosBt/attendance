@@ -1,34 +1,36 @@
-<%- include('header', {title: 'Αρχική Σελίδα', is_index: true}) %>
+<%- include(
+    'header',
+    {
+        title: 'Αρχική Σελίδα',
+        is_index: true,
+        loggedin: data.loggedin,
+        username: data.username
+    }
+) %>
 
-<% if (data.loggedin) { %>
-    <p>Welcome <%= data.username %>!</p>
-    <form method="POST" action="/logout">
-        <input type="submit" value="LOGOUT">
-    </form>
-    <%
-        switch (data.role) {
-            case 'student': %>
-                <%- include('student_homepage', {data: data}); %>
-                <%
-                break;
-            case 'secretary': %>
-                <%- include('secretary_homepage', {data: data}); %>
-                <%
-                break;
-            case 'professor': %>
-                <%- include('professor_homepage', {data: data}); %>
-                <%
-                break;
+<% if (data.loggedin) {
+    switch (data.role) {
+        case 'student': %>
+            <%- include('student_homepage', {data: data}); %>
+            <%
+            break;
+        case 'secretary': %>
+            <%- include('secretary_homepage', {data: data}); %>
+            <%
+            break;
+        case 'professor': %>
+            <%- include('professor_homepage', {data: data}); %>
+            <%
+            break;
 
-            case 'admin': %>
-                <%- include('admin_homepage', {data: data}); %>
-                <%
-                break;
-            default:
-                break;
+        case 'admin': %>
+            <%- include('admin_homepage', {data: data}); %>
+            <%
+            break;
+        default:
+            break;
         }
-    %>
-<% } else { %>
+} else { %>
     <form method="POST" action="/login">
         <label for="username">username:</label>
         <input type="text" name="username" id="username">
