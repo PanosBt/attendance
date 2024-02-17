@@ -1,28 +1,30 @@
-<%- include('header', {title: 'Προβολή Παρουσίας'}) %>
+<%- include('header', {title: 'Προβολή Παρουσίας', full_width: true}) %>
 
-<h4>Προβολή Παρουσιολογίου</h4>
-<span>Μάθημα: <%= course.name %></span>
-<br>
-<span>Ημερομηνία: <%= attendance_registry_record.date_str %></span>
-<br>
-<span>Σύνολο παρουσιών: <%= occupied_seats.total %></span>
+<div class="text-center">
+    <h4>Προβολή Παρουσιολογίου</h4>
+    <span>Μάθημα: <%= course.name %></span>
+    <br>
+    <span>Ημερομηνία: <%= attendance_registry_record.date_str %></span>
+    <br>
+    <span>Σύνολο παρουσιών: <%= occupied_seats.total %></span>
 
-<div class="mt-2">
-    <% if (!attendance_registry_record.finalized) { %>
-        <button class="btn btn-primary ii__toggle_ar_open_btn" id="open_ar_btn"
-            data-arid="<%= attendance_registry_record.id %>"
-            <%- (attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
-            ΑΝΟΙΓΜΑ ΠΑΡΟΥΣΙΩΝ
-        </button>
-        <button class="btn btn-primary ii__toggle_ar_open_btn" id="close_ar_btn"
-            data-arid="<%= attendance_registry_record.id %>"
-            <%- (!attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
-            ΚΛΕΙΔΩΜΑ ΠΑΡΟΥΣΙΩΝ
-        </button>
-    <% } %>
+    <div class="mt-2">
+        <% if (!attendance_registry_record.finalized) { %>
+            <button class="btn btn-primary ii__toggle_ar_open_btn" id="open_ar_btn"
+                data-arid="<%= attendance_registry_record.id %>"
+                <%- (attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
+                ΑΝΟΙΓΜΑ ΠΑΡΟΥΣΙΩΝ
+            </button>
+            <button class="btn btn-primary ii__toggle_ar_open_btn" id="close_ar_btn"
+                data-arid="<%= attendance_registry_record.id %>"
+                <%- (!attendance_registry_record.open ? ' style="display: none;"' : '')  %>>
+                ΚΛΕΙΔΩΜΑ ΠΑΡΟΥΣΙΩΝ
+            </button>
+        <% } %>
+    </div>
 </div>
 
-<h5 class="text-center mb-4">Αίθουσα: <%=room.name %></h5>
+<h5 class="text-center my-4">Αίθουσα: <%=room.name %></h5>
 
 <div id="view_attendance_room" data-cid="<%= course.id %>">
     <% room.layout.forEach((seatsCount, ix) => {

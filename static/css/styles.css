@@ -6,6 +6,11 @@ header {
     margin-bottom: 50px;
 }
 
+.full_width_container {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
 .seat_container {
     position: relative;
     margin-right: 5px;

@@ -1,9 +1,11 @@
-<%- include('header', {title: 'Δήλωση Παρουσίας'}) %>
+<%- include('header', {title: 'Δήλωση Παρουσίας', full_width: true}) %>
 
-<h4>Δήλωση Παρουσίας</h4>
-<span>Μάθημα: <%= course.name %></span>
+<div class="text-center">
+    <h4>Δήλωση Παρουσίας</h4>
+    <span>Μάθημα: <%= course.name %></span>
+</div>
 
-<h5 class="text-center">Αίθουσα: <%=room.name %></h5>
+<h5 class="text-center mb-4">Αίθουσα: <%=room.name %></h5>
 
 <div id="declare_attendance_room"
     data-selected_seat_index="" data-cid="<%= course.id %>" data-arid="<%= attendance_registry_record.id %>">
