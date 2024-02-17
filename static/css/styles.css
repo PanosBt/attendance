@@ -2,12 +2,57 @@ input[type=number]::-webkit-inner-spin-button {
     opacity: 1;
 }
 
+body, table, table.table {
+    color: #004976;
+}
+
+h4 {
+    color: #007BFF;
+}
+
+
 header {
-    border-bottom: 1px solid black;
-    height: 100px;
+    height: 170px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin-bottom: 50px;
+    background-color: #F2FAFF;
+    color: #007BFF;
+}
+
+header h5, header span {
+    color: #014A76;
+}
+
+header span {
+    font-size: 16px;
+}
+
+header a {
+    font-size: 14px;
+}
+
+header .user_container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: auto;
+}
+
+header .header_second_row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 60px;
+    white-space: nowrap;
+}
+
+header .user_container a:first-child{
+    margin-right: 20px;
+}
+
+header .header_url, header .user_container {
+    margin-top: auto;
+    margin-bottom: 20px;
 }
 
 .full_width_container {
@@ -195,6 +240,10 @@ input.invalid {
     margin-top: 50px;
 }
 
+.responsive_sm_table {
+    width: 25%;
+}
+
 @media screen and (max-width: 576px) {
     .seat_square {
         width: 20px;
@@ -216,11 +265,27 @@ input.invalid {
     }
 
     header {
+        height: 160px;
+    }
+
+    /* header a {
         font-size: 12px;
     }
 
-    header h4 {
-        font-size: 16px;
+    header span {
+        font-size: 14px;
+    } */
+
+    header .header_second_row {
+        margin: 0 10px;
+    }
+
+    header h5 {
+        font-size: 14px;
+    }
+
+    header h3 {
+        font-size: 24px;
     }
 
     .table th {
@@ -230,6 +295,10 @@ input.invalid {
 
     .table td {
         font-size: 12px;
+    }
+
+    .responsive_sm_table {
+        width: 100%;
     }
 
     .responsive_form {

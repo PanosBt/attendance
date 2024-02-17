@@ -14,25 +14,29 @@
 
     <body>
         <header>
-            <% if (typeof is_index === 'undefined') { %>
-                <a href="/" class="ml-2">Αρχική Σελίδα</a>
-            <% } %>
-            <div class="mx-auto text-center">
+            <div class="mx-auto text-center mt-3">
                 <div class="d-flex align-items-center">
-                    <img src="/img/hua_logo_blue.png" width="40" height="40" class="mr-2">
+                    <img src="/img/hua_logo_blue.png" width="40" height="40" class="mr-sm-2">
                     <h5>Χαροκόπειο Πανεπιστήμιο Αθηνών</h5>
                 </div>
                 <h3>Παρουσιολόγιο</h3>
             </div>
 
+            <div class="header_second_row">
+                <% if (typeof is_index === 'undefined') { %>
+                    <a href="/" class="header_url">Αρχική Σελίδα</a>
+                <% } %>
+                <% if (typeof user !== 'undefined') { %>
+                    <div class="user_container">
+                        <span>Χρήστης: <%= user.username %></span>
+                        <div class="user_links_container">
+                            <a href="/logout">Αποσύνδεση</a>
+                            <a href="/change_pass">Αλλαγή Κωδικού</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
 
-            <% if (typeof user !== 'undefined') { %>
-                <div class="d-flex flex-column align-items-start mr-3">
-                    <span>Χρήστης: <%= user.username %></span>
-                    <a href="/logout">Αποσύνδεση</a>
-                    <a href="/change_pass">Αλλαγή Κωδικού</a>
-                </div>
-            <% } %>
 
         </header>
-        <div class="<%= (typeof full_width !== 'undefined' && full_width ? 'full_width_container' : 'container') %> my-2">
+        <div class="<%= (typeof full_width !== 'undefined' && full_width ? 'full_width_container' : 'container') %>">
