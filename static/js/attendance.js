@@ -15,36 +15,18 @@ const ajaxPost = async (url, dataJson, successCb, failCb = () => {}) => {
     }
 }
 
-const generateSeatHtml = (n, include_del_btn = true) => {
+const generateSeatsHtml = (n) => {
     let html = '';
     for (let ix = 0; ix < n; ix++) {
         let seatId = `seat_${Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - 1))}`;
         html += `
             <div class="seat_container ii__room_seat" id="${seatId}">
-                ${
-                    include_del_btn ?
-                    `
-                    <div class="action_btn delete_btn delete_btn__seat ii__delete_seat_btn" data-sid="${seatId}">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
-                    `
-                    :
-                    ''
-                }
                 <div class="seat_square"></div>
             </div>
         `;
     }
     return html;
 }
-
-const addSeatsToRoomRow = (roomRowContainer, roomRow, addSeatBtn, n = 1) => {
-    roomRow.insertAdjacentHTML('beforeend', generateSeatHtml(n));
-    roomRow.appendChild(addSeatBtn); // move to end of parent
-    const newSeatsCount = parseInt(roomRowContainer.dataset.seats_count) + n;
-    roomRowContainer.dataset.seats_count = newSeatsCount;
-    roomRowContainer.querySelector('.ii__seats_count').innerHTML = `Αριθμός Θέσεων: ${newSeatsCount}`;
-};
 
 const addRowsHtmlToRoom = (room, addRowsContainer, rowsHtml, newRowsCount) => {
     room.insertAdjacentHTML('beforeend', rowsHtml);
@@ -184,42 +166,6 @@ window.onload = () => {
             document.getElementById('declare_attendance_btn').disabled = false;
         }
 
-        const addSeatBtn = target.closest('.ii__add_seat_btn');
-        if (addSeatBtn) {
-            const roomRow = addSeatBtn.parentNode;
-            const roomRowContainer = roomRow.parentNode;
-            addSeatsToRoomRow(roomRowContainer, roomRow, addSeatBtn);
-            return;
-        }
-
-        const addMultiSeatsBtn = target.closest('.ii__add_multi_seats_btn');
-        if (addMultiSeatsBtn) {
-            const input = addMultiSeatsBtn.parentNode.getElementsByTagName('input')[0];
-            input.classList.remove('invalid');
-            const seatsNum = parseInt(input.value);
-            if (isNaN(seatsNum) || seatsNum <= 0) {
-                input.classList.add('invalid');
-                return;
-            }
-            const roomRowContainer = addMultiSeatsBtn.parentNode.parentNode;
-            const roomRow = roomRowContainer.querySelector('.ii__room_row');
-            const addSeatBtn = roomRow.querySelector('.ii__add_seat_btn');
-            addSeatsToRoomRow(roomRowContainer, roomRow, addSeatBtn, seatsNum);
-            input.value = 1;
-            return;
-        }
-
-        const deleteSeatBtn = target.closest('.ii__delete_seat_btn');
-        if (deleteSeatBtn) {
-            const seat = document.getElementById(deleteSeatBtn.dataset.sid);
-            const roomRowContainer = seat.closest('.ii__room_row_container');
-            seat.remove();
-            const newSeatsCount = parseInt(roomRowContainer.dataset.seats_count) - 1;
-            roomRowContainer.dataset.seats_count = newSeatsCount;
-            roomRowContainer.querySelector('.ii__seats_count').innerHTML = `Αριθμός Θέσεων: ${newSeatsCount}`;
-            return;
-        }
-
         const addRowsBtn = target.closest('.ii__add_rows_btn');
         if (addRowsBtn) {
             const input = addRowsBtn.parentNode.getElementsByTagName('input')[0];
@@ -240,18 +186,11 @@ window.onload = () => {
                             <div class="action_btn delete_btn delete_btn__row ii__delete_row_btn">
                                 <i class="fa-solid fa-xmark"></i>
                             </div>
-                            ${generateSeatHtml(1, false)}
-                            <div class="action_btn add_btn ii__add_seat_btn">
-                                <i class="fa-solid fa-circle-plus"></i>
-                            </div>
+                            ${generateSeatsHtml(1)}
                         </div>
-                        <div class="add_multi add_multi__seats">
-                            Προσθήκη&nbsp;<input type="text" value="1">&nbsp;θέσης/εων
-                            <div class="action_btn add_btn ml-2 ii__add_multi_seats_btn">
-                                <i class="fa-solid fa-circle-plus"></i>
-                            </div>
+                        <div class="my-3">
+                            <small>Αριθμός Θέσεων: &nbsp;<input class="seats_cnt_input ii__seats_count" type="number" value="1"></small>
                         </div>
-                        <small class="ii__seats_count">Αριθμός Θέσεων: 1</small>
                     </div>
                 `;
             }
@@ -402,6 +341,28 @@ window.onload = () => {
             }
             return;
         }
+    });
+
+    ['change', 'input'].forEach(evType => {
+        document.addEventListener(evType, async ev => {
+            const seatsCountInput = ev.target.closest('.ii__seats_count');
+            if (seatsCountInput) {
+                seatsCountInput.classList.remove('invalid');
+                const seatsCnt = parseInt(seatsCountInput.value);
+                if (!seatsCnt || seatsCnt < 1) {
+                    seatsCountInput.classList.add('invalid');
+                    return;
+                }
+                const rowContainer = seatsCountInput.closest('.ii__room_row_container'),
+                    row = rowContainer.querySelector('.ii__room_row'),
+                    delBtn = row.querySelector('.ii__delete_row_btn'),
+                    seatsHtml = generateSeatsHtml(seatsCnt)
+                ;
+                row.innerHTML = seatsHtml;
+                row.insertAdjacentElement('afterbegin', delBtn);
+                rowContainer.dataset.seats_count = seatsCnt;
+                }
+        });
     });
 
     const customFileInput = document.querySelector('.custom-file-input');

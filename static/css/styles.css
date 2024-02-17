@@ -1,3 +1,7 @@
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
 header {
     border-bottom: 1px solid black;
     height: 100px;
@@ -36,7 +40,7 @@ header {
 
 .delete_btn__seat {
     bottom: 40px;
-    left: 30px;
+    left: 13px;
 }
 
 .delete_btn__seat.delete_btn__seat_rel {
@@ -56,6 +60,10 @@ header {
     font-size: 20px;
 }
 
+.seats_cnt_input {
+    width: 55px;
+}
+
 .room_row_container {
     margin-bottom: 25px;
     border-bottom: 1px solid;
@@ -68,6 +76,10 @@ header {
     position: relative;
 }
 
+#room_name {
+    width: 300px;
+}
+
 .add_multi {
     display: flex;
     font-size: 14px;
@@ -75,7 +87,6 @@ header {
 }
 
 .add_multi__seats {
-    margin-left: 30px;
     margin-bottom: 10px;
 }
 

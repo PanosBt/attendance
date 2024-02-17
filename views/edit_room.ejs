@@ -1,14 +1,16 @@
 <%- include('header', {title: 'Αίθουσα', full_width: true}) %>
 
-<div class="form-group w-50">
+<div class="form-group">
     <label for="room_name">Όνομα Αίθουσας</label>
     <input class="form-control" type="text" id="room_name" value="<%= room_name %>">
 </div>
 
-<h4>Διάταξη</h4>
+<h4 class="text-center">Διάταξη</h4>
 
-<div class="mt-4" id="room" data-rows_count="1">
-    <small id="rows_count">Αριθμός Σειρών: <%= room_layout.length %></small>
+<div class="mt-4" id="room" data-rows_count="<%= room_layout.length %>">
+    <div class="mb-5 text-center">
+        <small id="rows_count">Αριθμός Σειρών: <%= room_layout.length %></small>
+    </div>
     <% room_layout.forEach((seatsCount, ix) => {
         if (seatsCount > 0) { %>
             <div class="room_row_container ii__room_row_container" data-seats_count="<%= seatsCount %>">
@@ -20,25 +22,13 @@
                     <% } %>
                     <% for (let iy=0; iy < seatsCount; iy++) { %>
                         <div class="seat_container ii__room_seat" id="seat_<%= ix %>_<%= iy %>">
-                            <% if (iy > 0) { %>
-                                <div class="action_btn delete_btn delete_btn__seat ii__delete_seat_btn" data-sid="seat_<%= ix %>_<%= iy %>">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-                            <% } %>
                             <div class="seat_square"></div>
                         </div>
                     <% } %>
-                    <div class="action_btn add_btn ii__add_seat_btn">
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </div>
                 </div>
-                <div class="add_multi add_multi__seats">
-                    Προσθήκη&nbsp;<input type="text" value="1">&nbsp;θέσης/εων
-                    <div class="action_btn add_btn ml-2 ii__add_multi_seats_btn">
-                        <i class="fa-solid fa-circle-plus"></i>
-                    </div>
+                <div class="my-3">
+                    <small>Αριθμός Θέσεων: &nbsp;<input class="seats_cnt_input ii__seats_count" type="number" value="<%= seatsCount %>"></small>
                 </div>
-                <small class="ii__seats_count">Αριθμός Θέσεων: <%= seatsCount %></small>
             </div>
         <% } else { %>
             <div class="room_row_container ii__room_row_container" data-seats_count="0">
