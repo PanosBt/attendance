@@ -3,18 +3,37 @@
 <% if (time_schedules.length) { %>
     <table class="table">
         <thead>
-            <th>Μάθημα</th>
-            <th>Αίθουσα</th>
-            <th>Ημέρα</th>
-            <th>Ώρες</th>
+            <tr>
+                <th>
+                    <span class="d-none d-sm-inline">Μάθημα</span>
+                    <span class="d-sm-none">Μάθημα<br>Αίθουσα</span>
+                </th>
+                <th class="d-none d-sm-table-cell">Αίθουσα</th>
+                <th>Ημέρα</th>
+                <th>Ώρες</th>
+            </tr>
         </thead>
         <tbody>
             <% time_schedules.forEach(time_schedule => { %>
                 <tr>
-                    <td><%= time_schedule.course_name %></td>
-                    <td><%= time_schedule.room_name %></td>
+                    <td>
+                        <span class="d-none d-sm-inline"><%= time_schedule.course_name %></span>
+                        <span class="d-sm-none">
+                            <%= time_schedule.course_name %>
+                            <br>
+                            <%= time_schedule.room_name %>
+                        </span>
+                    </td>
+                    <td class="d-none d-sm-table-cell"><%= time_schedule.room_name %></td>
                     <td><%= time_schedule.day %></td>
-                    <td><%= time_schedule.time_from.substring(0, 5) %> - <%= time_schedule.time_to.substring(0, 5) %></td>
+                    <td>
+                        <span class="d-none d-sm-inline"><%= time_schedule.time_from.substring(0, 5) %> - <%= time_schedule.time_to.substring(0, 5) %></span>
+                        <span class="d-sm-none">
+                            <%= time_schedule.time_from.substring(0, 5) %>
+                            <br>
+                            <%= time_schedule.time_to.substring(0, 5) %>
+                        </span>
+                    </td>
                 </tr>
             <% }) %>
         </tbody>
@@ -22,16 +41,15 @@
 <% } %>
 
 <hr class="w-50">
-<div class ="d-flex flex-column align-items-end">
-    <h5>Ανέβασμα Προγράμματος</h5>
-    <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει το προηγούμενο πρόγραμμα!</small>
-    <form class="responsive_form" action="/upload_time_schedules" method="POST", enctype="multipart/form-data">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="time_schedules" name="time_schedules">
-            <label class="custom-file-label" for="time_schedules">Αρχείο .xlsx</label>
-        </div>
-        <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
-    </form>
-</div>
+<h5>Ανέβασμα Προγράμματος</h5>
+<small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει το προηγούμενο πρόγραμμα!</small>
+<form action="/upload_time_schedules" method="POST", enctype="multipart/form-data">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="time_schedules" name="time_schedules">
+        <label class="custom-file-label" for="time_schedules">Αρχείο .xlsx</label>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary mt-2 mt-sm-0" value="ΑΠΟΣΤΟΛΗ">
+</form>
 
 <%- include('footer') %>

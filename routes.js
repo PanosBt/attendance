@@ -40,6 +40,7 @@ router.get('/courses', auth_middleware, CoursesController.getAll);
 router.post('/courses', auth_middleware, CoursesController.post);
 router.post('/upload_courses', auth_middleware, CoursesController.upload);
 router.post('/delete_course', auth_middleware, CoursesController.postDelete);
+router.post('/delete_all_courses', auth_middleware, CoursesController.postDeleteAll);
 
 router.get('/participations', auth_middleware, ParticipationsController.get);
 router.post('/upload_participations', auth_middleware, ParticipationsController.upload);

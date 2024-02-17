@@ -1,25 +1,54 @@
 <%- include('header', {title: 'Μαθήματα'}) %>
 
 <% if (courses.length) { %>
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-danger d-none d-sm-inline-block" id="delete_all_courses_btn">ΔΙΑΓΡΑΦΗ ΟΛΩΝ</button>
+        <button class="btn btn-danger btn-sm d-sm-none" id="delete_all_courses_btn">ΔΙΑΓΡΑΦΗ ΟΛΩΝ</button>
+    </div>
     <table class="table">
         <thead>
-            <th>Όνομα</th>
-            <th>Διδάσκων</th>
-            <th>Αίθουσα</th>
-            <th>Εξάμηνο</th>
-            <th>Ακαδημαϊκό Έτος</th>
-            <th>Παρουσιολόγια</th>
-            <th></th>
+            <tr>
+                <th>
+                    <span class="d-none d-sm-inline">Όνομα</span>
+                    <span class="d-sm-none">Όνομα<br>Ακαδ. Έτος</span>
+                </th>
+                <th>
+                    <span class="d-none d-sm-inline">Διδάσκων/ουσα</span>
+                    <span class="d-sm-none">Διδασκ.</span>
+                </th>
+                <th>
+                    <span class="d-none d-sm-inline">Εξάμηνο</span>
+                    <span class="d-sm-none">Εξάμηνο Αίθουσα</span>
+                </th>
+                <th class="d-none d-sm-table-cell">Αίθουσα</th>
+                <th class="d-none d-sm-table-cell">Ακαδημαϊκό Έτος</th>
+                <th class="d-none d-sm-table-cell">Παρουσιολόγια</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
             <% courses.forEach(course => { %>
                 <tr>
-                    <td><%= course.name %></td>
-                    <td><%= course.professor_name %> (<%= course.professor_ldap_id %>)</td>
-                    <td><%= course.room_name %></td>
-                    <td><%= course.semester %>ο</td>
-                    <td><%= course.year_season %></td>
                     <td>
+                        <span class="d-none d-sm-inline"><%= course.name %></span>
+                        <span class="d-sm-none">
+                            <%= course.name %>
+                            <br>
+                            <%= course.year_season %>
+                        </span>
+                    </td>
+                    <td><%= course.professor_name %> (<%= course.professor_ldap_id %>)</td>
+                    <td>
+                        <span class="d-none d-sm-inline"><%= course.semester %>ο</span>
+                        <span class="d-sm-none">
+                            <%= course.semester %>ο
+                            <br>
+                            <%= course.room_name %>
+                        </span>
+                    </td>
+                    <td class="d-none d-sm-table-cell"><%= course.room_name %></td>
+                    <td class="d-none d-sm-table-cell"><%= course.year_season %></td>
+                    <td class="d-none d-sm-table-cell">
                         <a class="btn btn-primary" href="/attendance_registries?cid=<%= course.id %>">ΠΡΟΒΟΛΗ</a>
                     </td>
                     <td>
@@ -29,13 +58,18 @@
                         </div>
                     </td>
                 </tr>
+                <tr class="d-sm-none">
+                    <td colspan="6">
+                        <a class="btn btn-primary btn-sm w-100" href="/attendance_registries?cid=<%= course.id %>">ΠΡΟΒΟΛΗ</a>
+                    </td>
+                </tr>
             <% }) %>
         </tbody>
     </table>
 <% } %>
 
 <% if (rooms.length) { %>
-    <form method="POST" class="form">
+    <form method="POST" class="form d-none d-sm-block">
         <table class="table">
             <thead>
                 <th>Όνομα</th>
@@ -65,25 +99,44 @@
         </table>
     </form>
 
-    <hr class="w-50">
-    <div class ="d-flex flex-column align-items-end">
-        <h5>Ενημέρωση μαθημάτων</h5>
-        <form class="responsive_form" action="/upload_courses" method="POST" enctype="multipart/form-data">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="courses" name="courses">
-                <label class="custom-file-label" for="courses">Αρχείο .xlsx</label>
-            </div>
-            <small>Προσοχή! Το ανέβασμα νέου αρχείου θα διαγράψει όλα τα αποθηκευμένα μαθήματα και τις αντίστοιχες παρουσίες αν επιλέξετε το παρακάτω πεδίο!</small>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="delete_past" id="delete_past">
-                <label class="form-check-label" for="delete_past">
-                    Διαγραφή προηγούμενων εγγραφών
-                </label>
-              </div>
-            <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
-        </form>
-    </div>
+    <form method="POST" class="form d-sm-none">
+        <div class="form-group">
+            <label for="course_name">Όνομα</label>
+            <input type="text" name="course_name" id="course_name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="professor_ldap_id">Διδάσκων (LDAP ID)</label>
+            <input type="text" name="professor_ldap_id" id="professor_ldap_id" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="room_id">Αίθουσα</label>
+            <select name="room_id" class="form-control" required>
+                <% rooms.forEach(room => { %>
+                    <option value="<%= room.id %>"><%= room.name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="semester">Εξάμηνο</label>
+            <input type="text" name="semester" id="semester" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="year_season">Ακαδημαϊκό Έτος</label>
+            <input type="text" name="year_season" id="year_season" class="form-control" required>
+        </div>
+        <input type="submit" class="btn btn-primary btn-sm form-control" value="ΝΕΟ ΜΑΘΗΜΑ">
+    </form>
 
+    <hr class="w-50">
+    <h5>Ενημέρωση μαθημάτων</h5>
+    <form action="/upload_courses" method="POST" enctype="multipart/form-data" class="form">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="courses" name="courses">
+            <label class="custom-file-label" for="courses">Αρχείο .xlsx</label>
+        </div>
+        <br>
+        <input type="submit" class="btn btn-primary mt-2 mt-sm-0" value="ΑΠΟΣΤΟΛΗ">
+    </form>
 <% } else { %>
     <span>Πρέπει να δημιουργηθεί τουλάχιστον μία αίθουσα για να γίνει εισαγωγή μαθημάτων</span>
 <% } %>

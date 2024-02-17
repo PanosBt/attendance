@@ -18,15 +18,13 @@
 <% } %>
 
 <hr class="w-50">
-<div class ="d-flex flex-column align-items-end">
-    <h5>Ανέβασμα Δηλώσεων Φοιτητών</h5>
-    <form class="responsive_form" action="/upload_participations" method="POST", enctype="multipart/form-data">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="courses_students" name="courses_students">
-            <label class="custom-file-label" for="courses_students">Αρχείο .xlsx</label>
-        </div>
-        <input type="submit" class="btn btn-primary mt-2 upload_file_btn" value="ΑΠΟΣΤΟΛΗ">
-    </form>
-</div>
+<h5>Ανέβασμα Δηλώσεων Φοιτητών</h5>
+<form class="form" action="/upload_participations" method="POST", enctype="multipart/form-data">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="courses_students" name="courses_students">
+        <label class="custom-file-label" for="courses_students">Αρχείο .xlsx</label>
+    </div>
+    <input type="submit" class="btn btn-primary mt-2 mt-sm-0" value="ΑΠΟΣΤΟΛΗ">
+</form>
 
 <%- include('footer') %>

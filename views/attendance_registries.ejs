@@ -4,15 +4,15 @@
 <span>Μάθημα: <%= course.name %></span>
 
 <% if (attendance_registry_records.length) { %>
-    <table class="table table-responsive mt-3">
+    <table class="table mt-3">
         <thead>
             <th>Ημερομηνία</th>
             <th>Αίθουσα</th>
             <th>
-                <span class="d-none d-sm-table-cell">Οριστικοποιημένο</span>
+                <span class="d-none d-sm-inline">Οριστικοποιημένο</span>
                 <span class="d-sm-none">Οριστικ.</span>
             </th>
-            <th></th>
+            <th class="d-none d-sm-table-cell"></th>
         </thead>
         <tbody>
             <% attendance_registry_records.forEach(attRec => { %>
@@ -27,11 +27,16 @@
                         <% } %>
 
                     </td>
-                    <td>
-                        <a class="btn btn-primary d-none d-sm-inline-block" href="/view_past_attendance?arid=<%= attRec.id %>">
+                    <td class="d-none d-sm-table-cell">
+                        <a class="btn btn-primary" href="/view_past_attendance?arid=<%= attRec.id %>">
                             ΠΡΟΒΟΛΗ
                         </a>
-                        <a class="btn btn-primary btn-sm d-sm-none" href="/view_past_attendance?arid=<%= attRec.id %>">
+
+                    </td>
+                </tr>
+                <tr class="d-sm-none">
+                    <td colspan="3">
+                        <a class="btn btn-primary btn-sm w-100" href="/view_past_attendance?arid=<%= attRec.id %>">
                             ΠΡΟΒΟΛΗ
                         </a>
                     </td>

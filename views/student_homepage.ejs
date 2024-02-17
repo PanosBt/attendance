@@ -5,11 +5,11 @@
         <thead>
             <th>Μάθημα</th>
             <th>
-                <span class="d-none d-sm-table-cell">Εξάμηνο</span>
+                <span class="d-none d-sm-inline">Εξάμηνο</span>
                 <span class="d-sm-none">Εξάμηνο Αίθουσα</span>
             </th>
             <th>
-                <span class="d-none d-sm-table-cell">Διδάσκων/ουσα</span>
+                <span class="d-none d-sm-inline">Διδάσκων/ουσα</span>
                 <span class="d-sm-none">Διδασκ.</span>
             </th>
             <th class="d-none d-sm-table-cell">Αίθουσα</th>
@@ -23,7 +23,7 @@
                         <span><%= course.name %></span>
                     </td>
                     <td>
-                        <span class="d-none d-sm-table-cell"><%= course.semester %>ο</span>
+                        <span class="d-none d-sm-inline"><%= course.semester %>ο</span>
                         <span class="d-sm-none">
                             <%= course.semester %>ο
                             <br>
@@ -66,27 +66,34 @@
 <% if (data.past_attendance_records.length) { %>
     <table class="table">
         <thead>
-            <th>Μάθημα</th>
-            <th>Αίθουσα</th>
-            <th>Ημερομηνία, Ώρα</th>
-            <th>Θέση</th>
-            <th class="d-none d-sm-table-cell"></th>
+            <tr>
+                <th>
+                    <span class="d-none d-sm-inline">Μάθημα</span>
+                    <span class="d-sm-none">Μάθημα<br>Αίθουσα</span>
+                </th>
+                <th class="d-none d-sm-table-cell">Αίθουσα</th>
+                <th>Ημερομηνία, Ώρα</th>
+                <th>Θέση</th>
+                <th class="d-none d-sm-table-cell"></th>
+            </tr>
         </thead>
         <tbody>
             <% data.past_attendance_records.forEach(attendance_record => { %>
                 <tr>
-                    <td><%= attendance_record.course_name %></td>
-                    <td><%= attendance_record.room_name %></td>
+                    <td>
+                        <span class="d-none d-sm-inline"><%= attendance_record.course_name %>ο</span>
+                        <span class="d-sm-none">
+                            <%= attendance_record.course_name %>
+                            <br>
+                            <%= attendance_record.room_name %>
+                        </span>
+                    </td>
+                    <td class="d-none d-sm-table-cell"><%= attendance_record.room_name %></td>
                     <td>
                         <%= attendance_record.datetime_str %>
-                        <% if (attendance_record.current) { %>
-                            <a class="btn btn-primary btn-sm d-sm-none mt-2" href="/declare_attendance?cid=<%= attendance_record.course_id %>">
-                                Προβολή
-                            </a>
-                        <% } %>
                     </td>
                     <td>
-                        <span class="d-none d-sm-table-cell"><%= attendance_record.seat_desc %></span>
+                        <span class="d-none d-sm-inline"><%= attendance_record.seat_desc %></span>
                         <span class="d-sm-none"><%= attendance_record.seat_desc_short %></span>
                     </td>
                     <td class="d-none d-sm-table-cell">
@@ -97,6 +104,15 @@
                         <% } %>
                     </td>
                 </tr>
+                <% if (attendance_record.current) { %>
+                    <tr class="d-sm-none">
+                        <td colspan="3">
+                            <a class="btn btn-primary btn-sm w-100" href="/declare_attendance?cid=<%= attendance_record.course_id %>">
+                                Προβολή
+                            </a>
+                        </td>
+                    </tr>
+                <% } %>
             <% }); %>
         </tbody>
     </table>

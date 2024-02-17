@@ -108,12 +108,6 @@ input.invalid {
     border-color: red;
 }
 
-.upload_file_btn {
-    margin-left: auto;
-    width: fit-content;
-    display: block;
-}
-
 .selectable_room_seat_container:hover {
     opacity: 0.6;
     cursor: pointer;
@@ -172,6 +166,10 @@ input.invalid {
     margin-right: 5px;
 }
 
+.custom-file {
+    width: 50%;
+}
+
 .responsive_form {
     width: 25%;
 }
@@ -197,7 +195,7 @@ input.invalid {
     margin-top: 50px;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 576px) {
     .seat_square {
         width: 20px;
         height: 20px;
@@ -236,5 +234,9 @@ input.invalid {
 
     .responsive_form {
         width: 100%;
+    }
+
+    .custom-file {
+        width: 100%
     }
 }

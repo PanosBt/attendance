@@ -155,6 +155,24 @@ window.onload = () => {
             return;
         }
 
+        if (target.id == 'delete_all_courses_btn') {
+            const res = confirm('Είστε σίγουροι ότι επιθυμείτε τη διαγραφή όλων των μαθημάτων;');
+            if (res) {
+                await ajaxPost(
+                    '/delete_all_courses',
+                    {},
+                    () => {
+                        location.reload();
+                    },
+                    () => {
+                        alert('Η διαγραφή απέτυχε');
+                        location.reload();
+                    }
+                );
+            }
+            return;
+        }
+
         const selectableSeat = target.closest('.ii__selectable_room_seat');
         if (selectableSeat) {
             document.querySelectorAll('.ii__selectable_room_seat').forEach(seatElem => {

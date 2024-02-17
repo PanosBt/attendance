@@ -124,13 +124,12 @@ export class Course {
         }
     }
 
-    static async deleteInsertBatch(data, deleteCurrentData) {
-        await knex.transaction(async trx => {
-            if (deleteCurrentData) {
-                await trx('courses').del();
-            }
-            await trx('courses').insert(data);
-        });
+    static async insertBatch(data) {
+        await knex().insert(data).into('courses');
+    }
+
+    static async deleteAll() {
+        await knex('courses').del();
     }
 
     async delete() {

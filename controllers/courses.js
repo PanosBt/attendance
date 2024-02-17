@@ -48,7 +48,6 @@ export const upload = async (ctx) => {
         ctx.response.status = 400;
         return;
     }
-    const deletePast = ctx.request.body.delete_past == 'on';
     try {
         const coursesFile = xlsx.parse(fs.readFileSync(ctx.request.files.courses.path));
         const data = coursesFile[0].data;
@@ -100,7 +99,7 @@ export const upload = async (ctx) => {
             ctx.response.status = 400;
             return;
         }
-        await Course.deleteInsertBatch(entries, deletePast);
+        await Course.insertBatch(entries);
 
     } catch(err) {
     } finally {
@@ -124,6 +123,14 @@ export const postDelete = async (ctx) => {
 
     await course.delete();
 
+    ctx.response.body = {
+    };
+    ctx.response.status = 200;
+}
+
+export const postDeleteAll = async (ctx) => {
+    Util.checkRole(ctx, 'secretary');
+    await Course.deleteAll();
     ctx.response.body = {
     };
     ctx.response.status = 200;
