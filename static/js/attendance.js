@@ -391,5 +391,10 @@ window.onload = () => {
         });
     }
 
-    $('[data-toggle="tooltip"]').tooltip();
+    const selectedSeat = document.querySelector('.selected');
+    if (selectedSeat) {
+        selectedSeat.scrollIntoView();
+    }
+
+    $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
 };

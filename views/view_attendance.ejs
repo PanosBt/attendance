@@ -49,6 +49,7 @@
                             <% } %>
                             <div class="seat_container occupied"
                             tabindex="0" data-toggle="tooltip" data-placement="top" data-html="true"
+                            data-bs-trigger="manual"
                             title="
                                 <span><%= studentDesc %></span>
                                 <br>
@@ -57,11 +58,17 @@
                                 <span><%= seatDesc %></span>
                             "
                             >
-                                <div class="seat_square"></div>
+                                <div class="seat_square">
+                                    <span>Σ&colon;<%= ix + 1 %></span>
+                                    <span>Θ&colon;<%= iy + 1 %></span>
+                                </div>
                             </div>
                         <% } else { %>
                             <div class="seat_container">
-                                <div class="seat_square"></div>
+                                <div class="seat_square">
+                                    <span>Σ&colon;<%= ix + 1 %></span>
+                                    <span>Θ&colon;<%= iy + 1 %></span>
+                                </div>
                             </div>
                         <% } %>
                     <% } %>

@@ -70,6 +70,14 @@ header .header_url, header .user_container {
     width: 40px;
     height: 40px;
     border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.seat_square span {
+    font-size: 12px;
+    margin-left: 5px;
 }
 
 .action_btn:hover {
@@ -170,6 +178,10 @@ input.invalid {
     background-color: gray;
 }
 
+.seat_container.occupied span {
+    display: none;
+}
+
 .opacity-75 {
     opacity: .75;
 }
@@ -245,9 +257,32 @@ input.invalid {
 }
 
 @media screen and (max-width: 576px) {
+    .seat_container {
+        width: 60px;
+        height: 60px;
+        padding: 5px;
+    }
+
+    #view_attendance_room .seat_container {
+        margin-top: 10px;
+    }
+
+    .delete_btn__seat.delete_btn__seat_rel {
+        bottom: 28px;
+        left: 25px;
+    }
+
     .seat_square {
-        width: 20px;
-        height: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .room_row:not(.empty_row_container) {
+        justify-content: flex-start;
+        max-width: 95%;
+        overflow-y: scroll;
+        box-shadow: 7px 0 5px -1px #f9f9f9;
+        -webkit-overflow-scrolling: auto;
     }
 
     .grid_col_index {
