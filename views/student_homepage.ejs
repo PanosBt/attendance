@@ -21,13 +21,6 @@
                 <tr>
                     <td>
                         <span><%= course.name %></span>
-                        <% if (course.attendances_finalized) { %>
-                            <small class="d-sm-none">Το παρουσιολόγιο έχει οριστικοποιηθεί.</small>
-                        <% } else { %>
-                            <a class="btn btn-primary btn-sm d-sm-none mt-2" href="/declare_attendance?cid=<%= course.id %>">
-                                Παρουσία
-                            </a>
-                        <% } %>
                     </td>
                     <td>
                         <span class="d-none d-sm-table-cell"><%= course.semester %>ο</span>
@@ -45,6 +38,18 @@
                             <small>Το παρουσιολόγιο έχει οριστικοποιηθεί.</small>
                         <% } else { %>
                             <a class="btn btn-primary" href="/declare_attendance?cid=<%= course.id %>">
+                                Δήλωση Παρουσίας
+                            </a>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr class="d-sm-none">
+                    <td colspan="4">
+                        <% if (course.attendances_finalized) { %>
+                            <br>
+                            <small >Το παρουσιολόγιο έχει οριστικοποιηθεί.</small>
+                        <% } else { %>
+                            <a class="btn btn-primary btn-sm w-100" href="/declare_attendance?cid=<%= course.id %>">
                                 Δήλωση Παρουσίας
                             </a>
                         <% } %>
