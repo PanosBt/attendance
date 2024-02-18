@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e js,mjs,ejs,json server.js"
+    "dev": "nodemon -e js,mjs,ejs,json --watch src src/server.js"
   },
   "author": "PanosBt",
   "license": "ISC",

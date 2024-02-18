@@ -1,4 +1,4 @@
-import knex from '../db/db.js';
+import knex from '../db.js';
 import { Util } from '../util.js';
 
 export class TimeSchedule {

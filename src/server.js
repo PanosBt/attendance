@@ -34,7 +34,7 @@ render(app, {
 });
 
 app.use(router.routes()).use(router.allowedMethods());
-app.use(serve('./static'));
+app.use(serve(path.join(__dirname, '..', '/static')));
 
 const port = 5000;
 

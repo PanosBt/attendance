@@ -1,4 +1,4 @@
-import knex from '../db/db.js';
+import knex from '../db.js';
 
 export class Attendance {
     static #deserialize(res) {
