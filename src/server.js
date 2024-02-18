@@ -11,7 +11,6 @@ import serve from 'koa-static';
 import formidable from 'koa2-formidable';
 
 process.env.TZ = 'Europe/Athens';
-
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const app = new Koa();

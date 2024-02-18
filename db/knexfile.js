@@ -7,9 +7,11 @@ require('dotenv').config({path: path.resolve(__dirname, '.env')});
 module.exports = {
     client: 'postgresql',
     connection: {
-        database: process.env.DB_DATABASE,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
+        host: process.env.NODE_ENV == 'production' ? 'host.docker.internal' : 'localhost',
+        database: process.env.POSTGRES_DB,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        port: process.env.NODE_ENV == 'production' ? 5432 : 5434,
         timezone: 'EET'
     },
     pool: {
