@@ -52,9 +52,9 @@ export class Attendance {
 
     static async getCourseAttendance(room_id, course_id, student_ldap_id=null, dateStr='') {
         const res = await knex
-            .select('attendance.*', 'users.ldap_id AS student_ldap_id', 'users.name AS student_name')
+            .select('attendance.*', 'users.name AS student_name')
             .from('attendance')
-                .innerJoin('users', 'attendance.student_ldap_id', '=', 'users.ldap_id')
+                .leftJoin('users', 'attendance.student_ldap_id', '=', 'users.ldap_id')
             .where('room_id', room_id)
             .andWhere('course_id', course_id)
             .modify((queryBuilder) => {
@@ -101,7 +101,7 @@ export class Attendance {
         attendance.forEach(attendanceRecord => {
             occupiedSeats[attendanceRecord.seat_index] = {
                 student_ldap_id: attendanceRecord.student_ldap_id,
-                student_name: attendanceRecord.student_name,
+                student_name: attendanceRecord.student_name ?? '',
                 datetime_str: attendanceRecord.datetime_str,
                 attendance_record_id: attendanceRecord.id
             };

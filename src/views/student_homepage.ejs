@@ -30,7 +30,7 @@
                             <%= course.room_name %>
                         </span>
                     </td>
-                    <td><%= course.professor_name %></td>
+                    <td><%= course.professor_ldap_id %><%= (course.professor_name ? ` (${course.professor_name})` : '') %></td>
                     <td class="d-none d-sm-table-cell"><%= course.room_name %></td>
                     <td><%= `${course.time_from} - ${course.time_to}` %></td>
                     <td class="d-none d-sm-table-cell">

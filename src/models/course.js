@@ -72,7 +72,7 @@ export class Course {
             .from('courses')
                 .innerJoin('time_schedules', 'courses.id', '=', 'time_schedules.course_id')
                 .innerJoin('rooms', 'courses.room_id', '=', 'rooms.id')
-                .innerJoin('users', 'courses.professor_ldap_id', '=', 'users.ldap_id')
+                .leftJoin('users', 'courses.professor_ldap_id', '=', 'users.ldap_id')
                 .leftJoin('attendance_registry', function() {
                     this
                         .on('attendance_registry.course_id', 'courses.id')

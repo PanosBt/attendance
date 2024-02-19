@@ -2,4 +2,3 @@
 .gitignore
 Dockerfile
 node_modules
-*.env

@@ -37,7 +37,7 @@
                             <%= course.year_season %>
                         </span>
                     </td>
-                    <td><%= course.professor_name %> (<%= course.professor_ldap_id %>)</td>
+                    <td><%= course.professor_ldap_id %><%= (course.professor_name ? ` (${course.professor_name})` : '') %></td>
                     <td>
                         <span class="d-none d-sm-inline"><%= course.semester %>ο</span>
                         <span class="d-sm-none">

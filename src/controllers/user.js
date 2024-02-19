@@ -40,14 +40,14 @@ export const postDelete = async (ctx) => {
 };
 
 export const getChangePass = async (ctx) => {
-    if (!ctx.isAuthenticated()) {
+    if (!ctx.isAuthenticated() || !ctx.state.user.local_user) {
         return redirect('/');
     }
     await ctx.render('change_pass');
 };
 
 export const postChangePass = async (ctx) => {
-    if (!ctx.isAuthenticated() || !ctx.request.body.pass) {
+    if (!ctx.isAuthenticated() || !ctx.request.body.pass || !ctx.state.user.local_user) {
         ctx.response.status = 400;
         return;
     }

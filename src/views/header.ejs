@@ -31,7 +31,9 @@
                         <span>Χρήστης: <%= user.username %></span>
                         <div class="user_links_container">
                             <a href="/logout">Αποσύνδεση</a>
-                            <a href="/change_pass">Αλλαγή Κωδικού</a>
+                            <% if (user.local_user) { %>
+                                <a href="/change_pass">Αλλαγή Κωδικού</a>
+                            <% } %>
                         </div>
                     </div>
                 <% } %>
