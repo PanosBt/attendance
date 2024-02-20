@@ -24,7 +24,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
     return knex.schema
         .alterTable('courses', (table) => {
-            // table.dropForeign('professor_ldap_id');
+            table.dropForeign('professor_ldap_id');
             table.renameColumn('professor_ldap_id', 'professor_id');
         })
         .alterTable('courses', (table) => {

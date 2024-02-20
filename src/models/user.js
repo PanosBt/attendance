@@ -32,13 +32,6 @@ export class User {
         ) {
             return 'professor';
         }
-        if (
-            ldapTitle.toLowerCase().includes('ιδρυματικός λογαριασμός') ||
-            ldapTitle.toLowerCase().includes('συνεργ') ||
-            ldapTitle.toLowerCase().includes('διοικητικ')
-        ) {
-            return 'secretary';
-        }
         return '';
     }
 
@@ -76,7 +69,6 @@ export class User {
                 .into('users');
             return await User.getById(insertedIdArr[0].id);
         } catch (err) {
-            console.log(err);
             return null;
         }
     }

@@ -1,4 +1,4 @@
-POSTGRES_DB='<attendance>'
+POSTGRES_DB='attendance'
 POSTGRES_USER='<USERNAME>'
 POSTGRES_PASSWORD='<PASSWORD>'
 LDAP_BIND_DN='uid=<YOUR LDAP USERNAME>,ou=People,dc=hua,dc=gr'

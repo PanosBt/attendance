@@ -2,6 +2,7 @@ import he from 'he';
 import { Course } from '../models/course.js';
 import { Attendance } from '../models/attendance.js';
 import { User } from '../models/user.js';
+import { SecretaryLDAPUser } from '../models/secretary_user.js';
 
 export const get = async (ctx) => {
     let data = {
@@ -45,6 +46,7 @@ export const get = async (ctx) => {
                 break;
             case 'admin':
                 data.all_users = await User.getAll();
+                data.secretary_users = await SecretaryLDAPUser.getAll();
                 break;
             default:
                 break;

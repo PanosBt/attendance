@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 import { Util } from '../util.js';
 import { User } from "../models/user.js";
+import { SecretaryLDAPUser } from '../models/secretary_user.js';
 
 export const postCreate = async (ctx) => {
     Util.checkRole(ctx, 'admin');
@@ -40,14 +41,16 @@ export const postDelete = async (ctx) => {
 };
 
 export const getChangePass = async (ctx) => {
-    if (!ctx.isAuthenticated() || !ctx.state.user.local_user) {
+    Util.checkRole(ctx, 'admin');
+    if (!ctx.state.user.local_user) {
         return redirect('/');
     }
     await ctx.render('change_pass');
 };
 
 export const postChangePass = async (ctx) => {
-    if (!ctx.isAuthenticated() || !ctx.request.body.pass || !ctx.state.user.local_user) {
+    Util.checkRole(ctx, 'admin');
+    if (!ctx.request.body.pass || !ctx.state.user.local_user) {
         ctx.response.status = 400;
         return;
     }
@@ -55,4 +58,31 @@ export const postChangePass = async (ctx) => {
     const success = await ctx.state.user.updatePass();
     ctx.body = { success: success };
     ctx.response.status = 200;
-}
+};
+
+export const postSecretaryLDAPUser = async (ctx) => {
+    Util.checkRole(ctx, 'admin');
+    if (!ctx.request.body.ldap_id) {
+        ctx.response.status = 400;
+        return ctx.redirect('/');
+    }
+    await SecretaryLDAPUser.create(ctx.request.body.ldap_id);
+    return ctx.redirect('/');
+};
+
+export const postDeleteSecretaryLDAPUser = async (ctx) => {
+    Util.checkRole(ctx, 'admin');
+    const suid = ctx.request.body.suid;
+    if (!suid) {
+        ctx.response.status = 400;
+        return;
+    }
+    const secUser = await SecretaryLDAPUser.get(suid);
+    if (!secUser) {
+        ctx.response.status = 400;
+        return;
+    }
+    await secUser.delete();
+    ctx.response.body = {};
+    ctx.response.status = 200;
+};

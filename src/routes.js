@@ -14,6 +14,7 @@ const router = new koaRouter();
 
 const auth_middleware = async (ctx, next) => {
     if (!ctx.isAuthenticated()) {
+        ctx.response.status = 401;
         return ctx.redirect('/');
     }
     await next();
@@ -48,10 +49,12 @@ router.post('/upload_participations', auth_middleware, ParticipationsController.
 router.get('/time_schedule', auth_middleware, TimeScheduleController.get);
 router.post('/upload_time_schedules', auth_middleware, TimeScheduleController.upload);
 
-router.post('/user', UserController.postCreate);
-router.post('/delete_user', UserController.postDelete);
-router.get('/change_pass', UserController.getChangePass);
-router.post('/change_pass', UserController.postChangePass);
+router.post('/user', auth_middleware, UserController.postCreate);
+router.post('/delete_user', auth_middleware, UserController.postDelete);
+router.get('/change_pass', auth_middleware, UserController.getChangePass);
+router.post('/change_pass', auth_middleware, UserController.postChangePass);
+router.post('/secretary_ldap_user', auth_middleware, UserController.postSecretaryLDAPUser);
+router.post('/delete_secretary_ldap_user', auth_middleware, UserController.postDeleteSecretaryLDAPUser);
 
 router.post('/login', LoginController.login);
 router.get('/logout', LogoutController.logout);

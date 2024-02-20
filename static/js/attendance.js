@@ -359,6 +359,25 @@ window.onload = () => {
             }
             return;
         }
+
+        const deleteSecUserBtn = target.closest('.ii__delete_secretary_user_btn');
+        if (deleteSecUserBtn) {
+            const suid = deleteSecUserBtn.dataset.suid;
+
+            ajaxPost(
+                '/delete_secretary_ldap_user',
+                {suid: parseInt(suid)},
+                (resJson) => {
+                    location.reload();
+                },
+                () => {
+                    alert('Η διαγραφή απέτυχε');
+                    location.reload();
+                }
+            );
+            return;
+        }
+
     });
 
     ['change', 'input'].forEach(evType => {

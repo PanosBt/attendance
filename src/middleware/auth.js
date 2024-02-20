@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { User } from '../models/user.js';
+import { SecretaryLDAPUser } from '../models/secretary_user.js';
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -46,14 +47,18 @@ passport.use('ldapcustom', new passportCustom.Strategy(
                 username: ctx.body.username,
                 userPassword: ctx.body.password
             });
-            const role = User.ldapTitleToRole(res.title);
+            let role = User.ldapTitleToRole(res.title);
             if (!role) {
-                return done(null, false);
+                const secUser = await SecretaryLDAPUser.getByLdapId(res.uid);
+                if (!secUser) {
+                    return done(null, false);
+                }
+                role = 'secretary';
             }
             const user = new User(
                 res.uid,
                 res.displayName,
-                'student',
+                role,
                 res.uid,
                 false
             );

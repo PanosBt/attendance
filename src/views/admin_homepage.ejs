@@ -37,8 +37,49 @@
     <span>Δεν υπάρχουν χρήστες στο σύστημα.</span>
 <% } %>
 
+<hr class="w-50">
+
+<h5>Γραμματεία</h5>
+<% if (data.secretary_users.length)  { %>
+    <small>Χρήστες LDAP με δικαίωμα "secretary":</small>
+    <table class="table responsive_sm_table mt-2">
+        <thead>
+            <tr>
+                <th>User Ldap ID</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <% data.secretary_users.forEach(secUser => { %>
+            <tr>
+                <td><%= secUser.ldap_id %></td>
+                <td>
+                    <div class="action_btn delete_btn ii__delete_secretary_user_btn"
+                        data-suid="<%= secUser.id %>"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <span>Δεν υπάρχουν χρήστες LDAP με δικαίωμα "secretary" στο σύστημα.</span>
+<% } %>
+
+<form class="form-inline mb-4" method="POST" action="/secretary_ldap_user">
+    <div class="form-group">
+        <label class="mr-0 mr-sm-2 mb-2 mb-sm-0" for="ldap_id">LDAP ID</label>
+        <input class="form-control mr-0 mr-sm-2 mb-2 mb-sm-0" type="text" name="ldap_id" id="ldap_id" required>
+        <input type="submit" class="btn btn-primary" value="ΚΑΤΑΧΩΡΙΣΗ">
+    </div>
+</form>
+
+<hr class="w-50">
+
 <h5>Δημιουργία νέου χρήστη</h5>
-<form class="form w-50" method="POST" action="/user">
+<form class="responsive_form" method="POST" action="/user">
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" class="form-control" required>
@@ -57,7 +98,7 @@
     </div>
     <div class="form-group">
         <label for="role">Role</label>
-        <select name="role" id="role" class="form-control w-25" required>
+        <select name="role" id="role" class="form-control" required>
             <% ['student', 'professor', 'secretary', 'admin'].forEach(role => { %>
                 <option value="<%= role %>"><%= role %></option>
             <% }) %>
