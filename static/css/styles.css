@@ -10,6 +10,9 @@ h4 {
     color: #007BFF;
 }
 
+table {
+    max-width: 100%;
+}
 
 header {
     height: 170px;
@@ -256,6 +259,14 @@ input.invalid {
     width: 25%;
 }
 
+.dt-search {
+    margin-bottom: 10px;
+}
+
+.dt-info {
+    font-size: 14px;
+}
+
 @media screen and (max-width: 576px) {
     .seat_container {
         width: 60px;
@@ -303,14 +314,6 @@ input.invalid {
         height: 160px;
     }
 
-    /* header a {
-        font-size: 12px;
-    }
-
-    header span {
-        font-size: 14px;
-    } */
-
     header .header_second_row {
         margin: 0 10px;
     }
@@ -342,5 +345,10 @@ input.invalid {
 
     .custom-file {
         width: 100%
+    }
+
+    .dt-info {
+        font-size: 10px;
+        margin-bottom: 10px;
     }
 }

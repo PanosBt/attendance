@@ -43,6 +43,7 @@ export class Attendance {
                 .innerJoin('rooms', 'attendance.room_id', '=', 'rooms.id')
             .where('student_ldap_id', student_ldap_id)
             .orderBy('attendance.datetime', 'desc')
+            .limit(50)
         ;
         if (!res) {
             return [];

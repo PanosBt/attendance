@@ -396,5 +396,12 @@ window.onload = () => {
         selectedSeat.scrollIntoView();
     }
 
+    $('.ii__datatable').DataTable({
+        lengthChange: false,
+        language: {
+            search: 'Αναζήτηση',
+            info: '_START_ έως _END_ από _TOTAL_ εγγραφές'
+        }
+    });
     $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
 };
