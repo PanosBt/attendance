@@ -4,7 +4,8 @@ Build:
 
 1. `$ cp .template_env db/.env`
 
-Replace `<POSTGRES_USER>` and `<POSTGRES_PASSWORD>` with a selected username and password for the db.
+In `./.env`: Replace `<POSTGRES_USER>` and `<POSTGRES_PASSWORD>` with a selected username and password for the db.
+Replace `<YOUR LDAP USERNAME>` and `<YOUR LDAP PASSWORD>` with your hua ldap credentials.
 
 2. `$ docker compose build`
 
